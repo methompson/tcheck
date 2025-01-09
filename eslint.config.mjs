@@ -5,7 +5,7 @@ export default [
   ...tseslint.config(tseslint.configs.recommended),
   eslintPluginPrettierRecommended,
   {
-    ignores: ['dist/*', '.eslintrc.js', 'jest.config.*', 'tsconfig.json'],
+    ignores: ['dist/*', 'jest.config.*', 'tsconfig.json'],
   },
   {
     languageOptions: {
@@ -22,7 +22,6 @@ export default [
     rules: {
       // Typescript
       '@typescript-eslint/no-unsafe-function-type': 'off',
-      '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-unused-vars': [
         'warn',
@@ -32,18 +31,13 @@ export default [
           caughtErrorsIgnorePattern: '^_',
         },
       ],
-      '@typescript-eslint/no-empty-function': ['off'],
 
       // Regular
       'prettier/prettier': 'warn',
+      semi: 'error',
+      quotes: ['warn', 'single', { avoidEscape: true }],
       indent: 'off',
-      'no-unused-vars': 'off',
-      'no-empty-function': 'off',
-      'max-classes-per-file': 'off',
-      strict: 'warn',
-      camelcase: 'warn',
       'no-console': 'warn',
-      'no-underscore-dangle': 'off',
       'no-multi-spaces': [
         'error',
         {
@@ -59,17 +53,9 @@ export default [
         },
       ],
       'no-trailing-spaces': 'error',
-      'brace-style': ['error', '1tbs'],
-      semi: 'error',
 
       'arrow-body-style': ['error', 'as-needed'],
       'arrow-parens': ['error', 'always'],
-      'no-empty': [
-        'error',
-        {
-          allowEmptyCatch: true,
-        },
-      ],
       'max-len': [
         'warn',
         {
@@ -80,11 +66,6 @@ export default [
         },
       ],
       'no-restricted-syntax': 'off',
-      quotes: ['warn', 'single', { avoidEscape: true }],
-      'import/no-named-as-default-member': 'off',
-
-      'import/namespace': 'off',
-      'import/named': 'off',
     },
   },
 ];

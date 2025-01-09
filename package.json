@@ -20,6 +20,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsup",
+    "lint": "eslint",
     "test": "jest"
   },
   "author": "Mathew E. Thompson",
