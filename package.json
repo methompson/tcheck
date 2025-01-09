@@ -1,0 +1,11 @@
+{
+  "name": "you_got_it",
+  "version": "1.0.0",
+  "description": "A TypeCheck / TypeGuard Library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
