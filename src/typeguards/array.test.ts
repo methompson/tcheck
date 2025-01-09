@@ -1,5 +1,5 @@
-import { arrayOf, isArray } from './array';
-import { isNumber, isString } from './scalars';
+import { isArrayOf, isArray } from './array';
+import { isNumber, isString } from './primitives';
 
 describe('arrays', () => {
   describe('isArray', () => {
@@ -32,8 +32,8 @@ describe('arrays', () => {
       );
       const strArr: unknown[] = numArr.map((i) => `${i}`);
 
-      expect(arrayOf<number>(numArr, isNumber)).toBe(true);
-      expect(arrayOf<string>(strArr, isString)).toBe(true);
+      expect(isArrayOf<number>(numArr, isNumber)).toBe(true);
+      expect(isArrayOf<string>(strArr, isString)).toBe(true);
     });
 
     test('returns false for arrays with values that do not match the guard', () => {
@@ -46,8 +46,8 @@ describe('arrays', () => {
       numArr.push('a');
       strArr.push(1);
 
-      expect(arrayOf<string>(numArr, isString)).toBe(false);
-      expect(arrayOf<number>(strArr, isNumber)).toBe(false);
+      expect(isArrayOf<string>(numArr, isString)).toBe(false);
+      expect(isArrayOf<number>(strArr, isNumber)).toBe(false);
     });
   });
 });

@@ -1,4 +1,4 @@
-import { isBoolean, isNumber, isString } from '../typeguards/scalars';
+import { isBoolean, isNumber, isString } from '../typeguards/primitives';
 import { makeTypeGuard, makeTypeGuardTest } from './type_guard_generator';
 
 describe('makeTypeGuard', () => {

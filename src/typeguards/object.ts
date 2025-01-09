@@ -1,7 +1,16 @@
+/**
+ * Checks if the value is an object. This function is very permissive,
+ * so it will return true for plain object, instances from classes, etc.
+ * It returns false for object-like values, like arrays and functions.
+ */
 export function isRecord(input: unknown): input is Record<string, unknown> {
   return !!input && typeof input === 'object' && !Array.isArray(input);
 }
 
+/**
+ * Alias for `isRecord`. TS calls regular objects "records".
+ * e.g. Record<string, unknown>
+ */
 export const isObject = isRecord;
 
 /**
@@ -56,7 +65,7 @@ export function isStrictFunction(input: unknown): input is Function {
  */
 export function isInstanceOf<T>(
   input: unknown,
-  constructor: new (...args: unknown[]) => T,
+  constructor: new (...args: never[]) => T,
 ): input is T {
   return typeof input === 'object' && input instanceof constructor;
 }

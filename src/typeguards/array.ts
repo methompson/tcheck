@@ -1,8 +1,17 @@
+/**
+ * Checks that the value is an array. THe contents do not matter
+ * to this function.
+ */
 export function isArray(input: unknown): input is unknown[] {
   return Array.isArray(input);
 }
 
-export function arrayOf<T>(
+/**
+ * Checks that the value is an array and that all of its elements
+ * pass the given guard. This is useful for checking that an array
+ * is homogenous.
+ */
+export function isArrayOf<T>(
   input: unknown,
   guard: (_input: unknown) => boolean,
 ): input is T[] {

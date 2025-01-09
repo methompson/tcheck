@@ -1,5 +1,5 @@
 import { isInstanceOf } from '../typeguards/object';
-import { isNumber, isString, isUndefined } from '../typeguards/scalars';
+import { isNumber, isString, isUndefined } from '../typeguards/primitives';
 import { unionGuard } from './union';
 
 describe('Union type', () => {
