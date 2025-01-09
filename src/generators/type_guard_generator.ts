@@ -16,7 +16,8 @@ interface MakeTypeGuardTestInput {
 /**
  * Exports a function that can test if an object conforms to a
  * given interface. The output is an array of strings that
- * represent the path to the invalid key
+ * represent the path to the invalid key. This is useful for determining
+ * which keys are invalid
  */
 export function makeTypeGuardTest(
   input: MakeTypeGuardTestInput,

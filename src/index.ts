@@ -6,9 +6,21 @@ export {
   isStrictFunction,
   isInstanceOf,
 } from './typeguards/object';
-export {} from './typeguards/primitives';
+export {
+  isString,
+  isNumber,
+  isBoolean,
+  isUndefined,
+  isNull,
+  isNullOrUndefined,
+  isBigInt,
+  isSymbol,
+} from './typeguards/primitives';
 
-export { isInstanceOfGenerator } from './generators/instanceOfGenerator';
+export {
+  isInstanceOfGenerator,
+  isArrayOfGenerator,
+} from './generators/instanceOfGenerator';
 export {
   makeTypeGuardTest,
   makeTypeGuard,

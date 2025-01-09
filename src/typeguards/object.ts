@@ -37,7 +37,7 @@ export function isStrictFunction(input: unknown): input is Function {
   // Testing for values added to the prototype, i.e. methods
   const proto = Object.getOwnPropertyDescriptors(input).prototype;
 
-  // Short closures don't have a prototype value.
+  // Arrow functions don't have a prototype value.
   if (!proto) {
     return true;
   }

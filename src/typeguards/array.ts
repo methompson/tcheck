@@ -1,5 +1,5 @@
 /**
- * Checks that the value is an array. THe contents do not matter
+ * Checks that the value is an array. The contents do not matter
  * to this function.
  */
 export function isArray(input: unknown): input is unknown[] {
