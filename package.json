@@ -2,14 +2,28 @@
   "name": "check",
   "version": "1.0.0",
   "description": "A TypeCheck / TypeGuard Library",
-  "main": "index.js",
   "type": "module",
+  "main": "index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "node": {
+        "import": "./dist/index.js",
+        "require": "./dist/index.cjs"
+      },
+      "import": "./dist/index.js",
+      "require": "./dist/idnex.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
   "scripts": {
     "build": "tsup",
     "test": "jest"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Mathew E. Thompson",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/jest": "^29.5.14",

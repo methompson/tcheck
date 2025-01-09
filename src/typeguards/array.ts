@@ -1,6 +1,8 @@
 /**
  * Checks that the value is an array. The contents do not matter
- * to this function.
+ * to this function. Use this instead of just `Array.isArray` to
+ * get `unknown[]` instead of `any[]`. This makes the type more
+ * strict and forces the user to check the contents of the array.
  */
 export function isArray(input: unknown): input is unknown[] {
   return Array.isArray(input);
