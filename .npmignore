@@ -1,2 +1,11 @@
 node_modules
 dist
+src
+
+.gitignore
+.npmignore
+eslint.config.mjs
+jest.config.js
+package-lock.json
+tsconfig.json
+tsup.config.ts

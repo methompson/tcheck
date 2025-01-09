@@ -24,5 +24,5 @@ export {
 export {
   makeTypeGuardTest,
   makeTypeGuard,
-} from './generators/type_guard_generator';
+} from './generators/typeGuardGenerator';
 export { unionGuard } from './generators/union';

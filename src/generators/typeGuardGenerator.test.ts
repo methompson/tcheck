@@ -1,5 +1,5 @@
 import { isBoolean, isNumber, isString } from '../typeguards/primitives';
-import { makeTypeGuard, makeTypeGuardTest } from './type_guard_generator';
+import { makeTypeGuard, makeTypeGuardTest } from './typeGuardGenerator';
 
 describe('makeTypeGuard', () => {
   test('makes a typeguard for the input', () => {
