@@ -3,7 +3,6 @@ export {
   isRecord,
   isObject,
   isFunction,
-  isStrictFunction,
   isInstanceOf,
 } from './typeguards/object';
 export {
@@ -22,7 +21,7 @@ export {
   isArrayOfGenerator,
 } from './generators/instanceOfGenerator';
 export {
-  makeTypeGuardTest,
-  makeTypeGuard,
+  typeGuardTestGenerator as typeGuardTestGenerator,
+  typeGuardGenerator as typeGuardGenerator,
 } from './generators/typeGuardGenerator';
 export { unionGuard } from './generators/union';

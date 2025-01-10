@@ -1,14 +1,17 @@
 import { isBoolean, isNumber, isString } from '../typeguards/primitives';
-import { makeTypeGuard, makeTypeGuardTest } from './typeGuardGenerator';
+import {
+  typeGuardGenerator,
+  typeGuardTestGenerator,
+} from './typeGuardGenerator';
 
-describe('makeTypeGuard', () => {
+describe('typeGuardGenerator', () => {
   test('makes a typeguard for the input', () => {
     interface MyFunInterface {
       key: string;
       num: number;
       bool: boolean;
     }
-    const tg = makeTypeGuard<MyFunInterface>({
+    const tg = typeGuardGenerator<MyFunInterface>({
       key: isString,
       num: isNumber,
       bool: isBoolean,
@@ -33,12 +36,12 @@ describe('makeTypeGuard', () => {
       valueSet: ValueSet;
     }
 
-    const vsTG = makeTypeGuard<ValueSet>({
+    const vsTG = typeGuardGenerator<ValueSet>({
       value: isString,
       isTrue: isBoolean,
     });
 
-    const mfiTG = makeTypeGuard<MyFunInterface>({
+    const mfiTG = typeGuardGenerator<MyFunInterface>({
       key: isString,
       num: isNumber,
       bool: isBoolean,
@@ -69,7 +72,7 @@ describe('makeTypeGuard', () => {
       num: number;
       bool: boolean;
     }
-    const tg = makeTypeGuard<MyFunInterface>({
+    const tg = typeGuardGenerator<MyFunInterface>({
       key: isString,
       num: isNumber,
       bool: isBoolean,
@@ -91,39 +94,41 @@ describe('makeTypeGuard', () => {
   });
 });
 
-describe('makeTypeGuardTest', () => {
-  test('makes a typeguard test for the input', () => {
-    const tgTest = makeTypeGuardTest({
+describe('typeGuardTestGenerator', () => {
+  test('makes a typeguard test for the input and returns invalid values', () => {
+    const tgTest = typeGuardTestGenerator({
       key: isString,
       num: isNumber,
       bool: isBoolean,
     });
 
-    expect(tgTest('string')).toEqual(['root']);
+    // All values are valid
     expect(tgTest({ key: 'hello', num: 1, bool: true })).toEqual([]);
+
+    // Invalid values
+    expect(tgTest('string')).toEqual(['root']);
     expect(tgTest({ key: 1, num: 1, bool: true })).toEqual(['key']);
     expect(tgTest({ key: 'hello', num: 1, bool: 'true' })).toEqual(['bool']);
     expect(tgTest({ key: 'hello', num: '1', bool: true })).toEqual(['num']);
     expect(tgTest({})).toEqual(['key', 'num', 'bool']);
   });
 
-  test('a typeguard test generated can be used in a nested interface', () => {
-    // interface ValueSet {
-    const vsTest = makeTypeGuardTest({
+  test('a typeguard test can be nested in another typeguard test', () => {
+    const childTest = typeGuardTestGenerator({
       value: isString,
       isTrue: isBoolean,
     });
 
-    // interface MyFunInterface {
-    const mfiTest = makeTypeGuardTest({
+    // nesting the vsTest in this test
+    const parentTest = typeGuardTestGenerator({
       key: isString,
       num: isNumber,
       bool: isBoolean,
-      valueSet: vsTest,
+      valueSet: childTest,
     });
 
     expect(
-      mfiTest({
+      parentTest({
         key: 'key',
         num: 96,
         bool: false,
@@ -131,7 +136,7 @@ describe('makeTypeGuardTest', () => {
       }),
     ).toEqual([]);
     expect(
-      mfiTest({
+      parentTest({
         key: 'key',
         num: 96,
         bool: false,
@@ -139,7 +144,7 @@ describe('makeTypeGuardTest', () => {
       }),
     ).toEqual(['valueSet.isTrue']);
     expect(
-      mfiTest({
+      parentTest({
         key: 'key',
         num: 96,
         bool: false,
@@ -148,30 +153,64 @@ describe('makeTypeGuardTest', () => {
     ).toEqual(['valueSet.value', 'valueSet.isTrue']);
   });
 
-  test('the value is correctly typeguarded', () => {
+  test('The typeguard test can be used with an if statement', () => {
     interface MyFunInterface {
       key: string;
       num: number;
       bool: boolean;
     }
-    const tg = makeTypeGuardTest({
+    const tg = typeGuardTestGenerator({
       key: isString,
       num: isNumber,
       bool: isBoolean,
     });
 
-    const myVal = {
+    const myVal1 = {
       key: 'hello',
       num: 1,
       bool: true,
     };
+    const myVal2 = {
+      key: 'hello',
+      num: 1,
+    };
 
     const myFunc = (input: MyFunInterface) => (input ? true : false);
 
-    if (tg(myVal)) {
-      expect(myFunc(myVal)).toBe(true);
+    if (tg(myVal1).length === 0) {
+      expect(myFunc(myVal1)).toBe(true);
+    }
+
+    // Will never run
+    if (tg(myVal2).length === 0) {
+      expect(true).toBe(false);
     }
 
     expect.assertions(1);
+  });
+
+  test('typeGuardTestGenerator results can be nested', () => {
+    const innerTest = typeGuardTestGenerator({
+      key: isString,
+      value: isNumber,
+    });
+
+    const outerTest = typeGuardTestGenerator({
+      key: isString,
+      inner: innerTest,
+    });
+
+    const good = {
+      key: 'hello',
+      inner: { key: 'world', value: 1 },
+    };
+
+    const bad = {
+      key: 'hello',
+      inner: { key: 'world', value: '1' },
+    };
+
+    expect(outerTest(good)).toEqual([]);
+    expect(outerTest(bad)).toEqual(['inner.value']);
   });
 });

@@ -14,47 +14,14 @@ export function isRecord(input: unknown): input is Record<string, unknown> {
 export const isObject = isRecord;
 
 /**
- * Checks that this is a function.
+ * Checks that this is a function. If the value is an ES6 class, it will return false
  * ES5 & ES6 classes are also considered functions. This is just how JavaScript works.
+ * This function is permissive and relatively quick, but some built-in functions
+ * will pass through that cannot be called, like Uint8Array, which will throw
+ * an error if called directly.
  */
 export function isFunction(input: unknown): input is Function {
-  return typeof input === 'function' && input instanceof Function;
-}
-
-/**
- * Checks that this is a function.
- * Tries to return false for classes.
- */
-export function isStrictFunction(input: unknown): input is Function {
-  if (!isFunction(input)) {
-    return false;
-  }
-
-  if (input.toString().startsWith('class ')) {
-    return false;
-  }
-
-  // Testing for values added to the prototype, i.e. methods
-  const proto = Object.getOwnPropertyDescriptors(input).prototype;
-
-  // Arrow functions don't have a prototype value.
-  if (!proto) {
-    return true;
-  }
-
-  const protoKeys = Object.keys(proto.value);
-  if (protoKeys.length > 0) {
-    return false;
-  }
-
-  // Testing for other values added to the function itself,
-  // i.e. static methods & values
-  const objKeys: string[] = [];
-  for (const key in input) {
-    objKeys.push(key);
-  }
-
-  return objKeys.length === 0;
+  return typeof input === 'function' && !input.toString().startsWith('class ');
 }
 
 /**

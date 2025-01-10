@@ -1,5 +1,10 @@
 import { isInstanceOf } from '../typeguards/object';
-import { isNumber, isString, isUndefined } from '../typeguards/primitives';
+import {
+  isNull,
+  isNumber,
+  isString,
+  isUndefined,
+} from '../typeguards/primitives';
 import { unionGuard } from './union';
 
 describe('Union type', () => {
@@ -29,5 +34,21 @@ describe('Union type', () => {
     expect(guard(null)).toBe(false);
     expect(guard({})).toBe(false);
     expect(guard([])).toBe(false);
+  });
+
+  test('union types can be combined', () => {
+    const isNullOrUndefined = unionGuard<null | undefined>(isNull, isUndefined);
+    const isStringOrNullOrUndefined = unionGuard<string | null | undefined>(
+      isNullOrUndefined,
+      isString,
+    );
+
+    expect(isNullOrUndefined(null)).toBe(true);
+    expect(isNullOrUndefined(undefined)).toBe(true);
+    expect(isNullOrUndefined('')).toBe(false);
+
+    expect(isStringOrNullOrUndefined(null)).toBe(true);
+    expect(isStringOrNullOrUndefined(undefined)).toBe(true);
+    expect(isStringOrNullOrUndefined('')).toBe(true);
   });
 });
