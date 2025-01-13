@@ -329,7 +329,7 @@ outerTest(good); // resolves to true
 outerTest(bad); // resolves to false
 ```
 
-`isInstanceOfGenerator` generates a function that can be used to determine if a value is an instances of a class. This function will not resolve to true for objects that are similar to class instances
+`isInstanceOfGenerator` generates a function that can be used to determine if a value is an instance of a class. This function will not resolve to true for objects that are similar to class instances
 ```ts
 const isDate = isInstanceOfGenerator<Date>(Date);
 isDate(new Date()); // resolves to true
