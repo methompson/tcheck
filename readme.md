@@ -1,4 +1,4 @@
-# Check
+# TCheck
 
 ### A Simple JS & TS Type Checking Library.
 
@@ -232,6 +232,7 @@ Check provides several generators for generating different kinds of guards:
 
 * `typeGuardTestGenerator` generates a new function that tests an object and returns an array of strings indicating what values are wrong within the object
 * `typeGuardGenerator` generates a new function that checks that an object conforms to a specific structure
+* `indexedObjectTypeGuardGenerator` generates a new function that checks if all the values of an object conform to a specific structure. Useful for objects where the key is a name, but not standardized.
 * `isInstanceOfGenerator` generates a new function that checks if a value is an instance of a class.
 * `isArrayOfGenerator` generates a new function that checks if an array contains values that conform to specific type guards
 * `unionGuard` generates a new function that checks that a value conforms to one of several different guards. This is useful for union types, i.e. those that may be one of several types.
@@ -327,6 +328,36 @@ const bad = {
 
 outerTest(good); // resolves to true
 outerTest(bad); // resolves to false
+```
+
+`indexedObjectTypeGuardGenerator` Generates a typeguard that takes the input as your test. The result of the function call is another function that can be used to type guard an object of indeterminate keys and specific values.
+```ts
+interface UserData {
+  id: string;
+  name: string;
+  balance: number;
+}
+interface UserCollection {
+  [key: string]: UserData,
+}
+
+const udGuard = typeGuardGenerator<UserData>({
+  id: isString,
+  name: isString,
+  balance: isNumber,
+});
+
+const udObjGuard = indexedObjectTypeGuardGenerator<UserCollection>(udGuard)
+
+const myObj = {
+  katie: { id: '1', name: 'Katie', balanced: 20 },
+  jonathan: { id: '2', name: 'Jonathan', balance: 10 },
+  franklin: { id: '3', name: 'Franklin', balanced: 15 },
+};
+
+udObjGuard(myObj); // resolves to true
+udObjGuard({}); // resolves to true
+ubObjGuard({ katie: {id: '1', name: 'Katie'} }); // resolves to false
 ```
 
 `isInstanceOfGenerator` generates a function that can be used to determine if a value is an instance of a class. This function will not resolve to true for objects that are similar to class instances

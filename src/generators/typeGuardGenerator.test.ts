@@ -1,5 +1,14 @@
-import { isBoolean, isNumber, isString } from '../typeguards/primitives';
 import {
+  isBoolean,
+  isNumber,
+  isString,
+  isUndefined,
+} from '../typeguards/primitives';
+import { unionGuard } from './union';
+import { isArrayOfGenerator } from './instanceOfGenerator';
+
+import {
+  indexedObjectTypeGuardGenerator,
   typeGuardGenerator,
   typeGuardTestGenerator,
 } from './typeGuardGenerator';
@@ -212,5 +221,52 @@ describe('typeGuardTestGenerator', () => {
 
     expect(outerTest(good)).toEqual([]);
     expect(outerTest(bad)).toEqual(['inner.value']);
+  });
+});
+
+describe('indexedObjectTypeGuardGenerator', () => {
+  test('returns true for an object of primitives', () => {
+    const iotgg = indexedObjectTypeGuardGenerator<string>(isString);
+
+    const input = {
+      a: 'a',
+      b: 'b',
+      c: 'c',
+    };
+
+    expect(iotgg(input)).toBe(true);
+  });
+
+  test('returns false for an object that deviates from the type', () => {
+    const iotgg = indexedObjectTypeGuardGenerator<string>(isString);
+
+    const input = {
+      a: 'a',
+      b: 'b',
+      c: 1,
+    };
+
+    expect(iotgg(input)).toBe(false);
+  });
+
+  test('can use complex typeguards too', () => {
+    type ValueSet = string | string[] | undefined;
+    const isStringArray = isArrayOfGenerator(isString);
+    const guard = unionGuard<ValueSet>(isString, isStringArray, isUndefined);
+
+    // Test the guard
+    expect(guard('hello')).toBe(true);
+    expect(guard(['hello', 'world'])).toBe(true);
+    expect(guard(undefined)).toBe(true);
+
+    const iotgg = indexedObjectTypeGuardGenerator<ValueSet>(guard);
+
+    const input = {
+      a: 'a',
+      b: ['b', 'c'],
+      c: undefined,
+    };
+
+    expect(iotgg(input)).toBe(true);
   });
 });

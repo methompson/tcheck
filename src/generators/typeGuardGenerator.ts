@@ -84,3 +84,25 @@ export function typeGuardGenerator<T>(
     );
   };
 }
+
+/**
+ * Exports a function that can test if an object has non-specific
+ * keys with values that conform to a specific interface or
+ * type.
+ * e.g. { [key: string]: boolean }
+ * e.g. { [key: string]: { [key: string]: boolean } }
+ *
+ * This test will confirm that the object's values are of
+ * the correct type.
+ */
+export function indexedObjectTypeGuardGenerator<T>(
+  tg: (input: unknown) => boolean,
+): (input: unknown) => input is T {
+  return (valueInput: unknown): valueInput is T => {
+    if (!isRecord(valueInput)) {
+      return false;
+    }
+
+    return Object.values(valueInput).every(tg);
+  };
+}

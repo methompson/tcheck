@@ -1,5 +1,5 @@
 {
-  "name": "check",
+  "name": "tcheck",
   "version": "1.0.0",
   "description": "A TypeCheck / TypeGuard Library",
   "type": "module",
