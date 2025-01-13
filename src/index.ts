@@ -21,7 +21,8 @@ export {
   isArrayOfGenerator,
 } from './generators/instanceOfGenerator';
 export {
-  typeGuardTestGenerator as typeGuardTestGenerator,
-  typeGuardGenerator as typeGuardGenerator,
+  typeGuardTestGenerator,
+  typeGuardGenerator,
+  indexedObjectTypeGuardGenerator,
 } from './generators/typeGuardGenerator';
 export { unionGuard } from './generators/union';
