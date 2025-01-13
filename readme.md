@@ -382,7 +382,7 @@ guard1(null); // resolves to true
 guard1(1); // resolves to false
 
 const isNullOrUndefined = unionGuard<null | undefined>(isNull, isUndefined);
-const isStringOrNullOrUndefined = unionGuard<string | null | undefined>(isString, isNullOrUndefined>();
+const isStringOrNullOrUndefined = unionGuard<string | null | undefined>(isString, isNullOrUndefined);
 
 isNullOrUndefined(null); // Resolves to true
 isNullOrUndefined(undefined); // Resolves to true
