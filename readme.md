@@ -6,7 +6,7 @@ Welcome to Check. Check is a simple type checking library that aims to make it e
 
 ### Basic Examples
 
-At its heart, all the functions are just simple type predicate functions that check for that the value conforms to your expectations.
+At its heart, all the functions are just simple type predicate functions that check that a value conforms to your expectations.
 
 You can easily confirm that your values are correct:
 
@@ -53,7 +53,7 @@ const a = {
   key: 'key',
   num: 10,
   bool: false,
-}
+};
 const b = {
   key: 'key',
   num: '10',
@@ -68,43 +68,43 @@ The purpose of the project was to make it easier to avoid dreaded type-related e
 
 The package does two separate things that eventually accomplish the same goal, depending on whether you're using TypeScript or JavaScript.
 
-All type guards is this package are written to use [TypeScript's type predicates](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates). This means that you can drop a typeguard in and if it resolves to `true`, TypeScript will assume that the value in question is what you say it is. This means that you can slide this into the TS type system without any kludges. They also work well with a JS project using JSDoc to annotate types.
+All type guards in this package are written to use [TypeScript's type predicates](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates). This means that you can drop a typeguard in and if it resolves to `true`, TypeScript will assume that the value in question is what you say it is. This means that you can slide this into the TS type system without any kludges. They also work well with a JS project using JSDoc to annotate types.
 
 As alluded above, all the type predicate functions resolve to a boolean value, meaning that you can just check whether your value is `true` or `false` and just assume the value has succeeded or failed the check.
 
 The package includes the following functions:
 
-* Typeguards for all [JavaScript Primitives](https://developer.mozilla.org/en-US/docs/Glossary/Primitive)
-* Type guards for objects, functions and instances of classes
-* Type guards for arrays, including testing the values of the arrays
-* Type guard generators that allow you to test complex objects
-* Type guard test generators that allow you to test objects to determine what values are incorrect
-* Union type type guard generators that allow you to generate type guards for more complicated union types.
+- Typeguards for all [JavaScript Primitives](https://developer.mozilla.org/en-US/docs/Glossary/Primitive)
+- Type guards for objects, functions and instances of classes
+- Type guards for arrays, including testing the values in an array
+- Type guard generators that create functions that allow you to test complex objects
+- Type guard test generators that allow you to test objects to determine what values are incorrect
+- Union type type guard generators that allow you to generate type guards for any combination of types.
 
 ## Primitives
 
 The primitive type guards test for all of JavaScript's basic primitive types:
 
-* `isString` - string
-* `isNumber` - number
-* `isBoolean` - boolean
-* `isUndefined` - undefined
-* `isNull` - null
-* `isBigInt` - bigint
-* `isSymbol` - symbol
+- `isString` - string
+- `isNumber` - number
+- `isBoolean` - boolean
+- `isUndefined` - undefined
+- `isNull` - null
+- `isBigInt` - bigint
+- `isSymbol` - symbol
 
 Plus `isNullOrUndefined` to test for either null or undefined.
 
 ### Examples
 
 ```ts
-isString('string');     // Resolves to true
-isNumber(0);            // Resolves to true
-isBoolean(true);        // Resolves to true
+isString('string'); // Resolves to true
+isNumber(0); // Resolves to true
+isBoolean(true); // Resolves to true
 isUndefined(undefined); // Resolves to true
-isNull(null);           // Resolves to true
-isBigInt(BigInt(0));    // Resolves to true
-isSymbol(Symbol());     // Resolves to true
+isNull(null); // Resolves to true
+isBigInt(BigInt(0)); // Resolves to true
+isSymbol(Symbol()); // Resolves to true
 ```
 
 ## Objects
@@ -115,16 +115,16 @@ It's important to note that in JavaScript, some types are actually another type.
 
 ```ts
 function hello() {}
-typeof hello // resolves to 'function'
+typeof hello; // resolves to 'function'
 
 class Goodbye {}
-typeof GoodBye // resolves to 'function'
+typeof GoodBye; // resolves to 'function'
 
 const goodBye = new GoodBye();
-typeof goodbye // resolves to 'object'
+typeof goodbye; // resolves to 'object'
 
 const myArr = [];
-typeof myArr // resolves to 'object'
+typeof myArr; // resolves to 'object'
 ```
 
 As such, some typecheck functions go the extra mile to make sure that the data is actually what we think it is.
@@ -134,7 +134,7 @@ As such, some typecheck functions go the extra mile to make sure that the data i
 The `isRecord`/`isObject` function tests to make sure that values are bona-fide objects. Arrays and null are both considered objects, but we should not consider them as such for practical purposes.
 
 ```ts
-isRecord({a: 'a', b: 10, c: true}); // resolves to true
+isRecord({ a: 'a', b: 10, c: true }); // resolves to true
 isRecord(new Date()); // resolves to true
 isRecord(Date); // resolves to false
 isRecord([]); // resolves to false
@@ -174,6 +174,7 @@ isInstanceOf<ES6Class>(inst, ES6Class); // resolves to true
 ```
 
 ES5 classes are a bit cumbersome to pass into TypeScript.
+
 ```ts
 interface AClassInterface {
   a(): void;
@@ -207,6 +208,7 @@ Check provides two functions for checking Arrays, `isArray` and `isArrayOf`. `is
 `isArrayOf` is a bit more specific. It checks if the contents of any array are of a specific type. This can be used with regular type guards as well as union type guards. This allows you to confirm that the Array is homogenous and of a specific type.
 
 ### Examples
+
 ```ts
 const var1 = [];
 const var2 = ['a', 'b', 'c'];
@@ -230,16 +232,17 @@ This functionality is compatible with both TypeScript AND JavaScript.
 
 Check provides several generators for generating different kinds of guards:
 
-* `typeGuardTestGenerator` generates a new function that tests an object and returns an array of strings indicating what values are wrong within the object
-* `typeGuardGenerator` generates a new function that checks that an object conforms to a specific structure
-* `indexedObjectTypeGuardGenerator` generates a new function that checks if all the values of an object conform to a specific structure. Useful for objects where the key is a name, but not standardized.
-* `isInstanceOfGenerator` generates a new function that checks if a value is an instance of a class.
-* `isArrayOfGenerator` generates a new function that checks if an array contains values that conform to specific type guards
-* `unionGuard` generates a new function that checks that a value conforms to one of several different guards. This is useful for union types, i.e. those that may be one of several types.
+- `typeGuardTestGenerator` generates a new function that tests an object and returns an array of strings indicating what values are wrong within the object
+- `typeGuardGenerator` generates a new function that checks that an object conforms to a specific structure
+- `indexedObjectTypeGuardGenerator` generates a new function that checks if all the values of an object conform to a specific structure. Useful for objects where the key is a name, but not standardized.
+- `isInstanceOfGenerator` generates a new function that checks if a value is an instance of a class.
+- `isArrayOfGenerator` generates a new function that checks if an array contains values that conform to specific type guards
+- `unionGuard` generates a new function that checks that a value conforms to one of several different guards. This is useful for union types, i.e. those that may be one of several types.
 
 ### Examples
 
 `typeGuardTestGenerator` Generates a test for an object or interface. This function's main goal is debugging. It allows you to produce a list of faulty keys/values within an object. If the value provided is not an object, it returns an array with the string `root`. You should be able to use the length of this test to make sure that the value is valid.
+
 ```ts
 interface Fun {
   a: string;
@@ -259,6 +262,7 @@ funTest('string'); // resolves to ['root']
 ```
 
 `typeGuardTestGenerator` can be nested to provide you insights into deeply nested errors:
+
 ```ts
 const innerTest = typeGuardTestGenerator({
   key: isString,
@@ -285,6 +289,7 @@ outerTest(bad); // resolves to ['inner.value']
 ```
 
 `typeGuardGenerator` Generates a typeguard that takes the input as your test. The result of the function call is another function that can be used to type guard your interfaces.
+
 ```ts
 interface Fun {
   a: string;
@@ -331,6 +336,7 @@ outerTest(bad); // resolves to false
 ```
 
 `indexedObjectTypeGuardGenerator` Generates a typeguard that takes the input as your test. The result of the function call is another function that can be used to type guard an object of indeterminate keys and specific values.
+
 ```ts
 interface UserData {
   id: string;
@@ -338,7 +344,7 @@ interface UserData {
   balance: number;
 }
 interface UserCollection {
-  [key: string]: UserData,
+  [key: string]: UserData;
 }
 
 const udGuard = typeGuardGenerator<UserData>({
@@ -347,7 +353,7 @@ const udGuard = typeGuardGenerator<UserData>({
   balance: isNumber,
 });
 
-const udObjGuard = indexedObjectTypeGuardGenerator<UserCollection>(udGuard)
+const udObjGuard = indexedObjectTypeGuardGenerator<UserCollection>(udGuard);
 
 const myObj = {
   katie: { id: '1', name: 'Katie', balanced: 20 },
@@ -357,10 +363,11 @@ const myObj = {
 
 udObjGuard(myObj); // resolves to true
 udObjGuard({}); // resolves to true
-ubObjGuard({ katie: {id: '1', name: 'Katie'} }); // resolves to false
+ubObjGuard({ katie: { id: '1', name: 'Katie' } }); // resolves to false
 ```
 
 `isInstanceOfGenerator` generates a function that can be used to determine if a value is an instance of a class. This function will not resolve to true for objects that are similar to class instances
+
 ```ts
 const isDate = isInstanceOfGenerator<Date>(Date);
 isDate(new Date()); // resolves to true
@@ -377,6 +384,7 @@ isAClass({ a: 'a', b: () => 'b' }); // resolves to false
 ```
 
 `isArrayOfGenerator` generates a function that allows you to determine if all values conform to a typeguard. This can determine if the array is homogenous.
+
 ```ts
 const isStrArr = isArrayOfGenerator<string>(isString); //  Tests for string arrays
 const goodVal = ['a', 'b', 'c'];
@@ -405,15 +413,23 @@ isAClassArr(fakeArr); // resolves to false
 ```
 
 `unionGuard` allows you to combine several type guards into a single function that type guards for TypeScript union types. This allows you to test for things like: "is String or undefined" or "is number or number array", etc. You can even combine union type guards.
+
 ```ts
-const guard1 = unionGuard<string | undefined | null>(isString, isUndefined, isNull);
+const guard1 = unionGuard<string | undefined | null>(
+  isString,
+  isUndefined,
+  isNull,
+);
 guard1('a'); // resolves to true
 guard1(undefined); // resolves to true
 guard1(null); // resolves to true
 guard1(1); // resolves to false
 
 const isNullOrUndefined = unionGuard<null | undefined>(isNull, isUndefined);
-const isStringOrNullOrUndefined = unionGuard<string | null | undefined>(isString, isNullOrUndefined);
+const isStringOrNullOrUndefined = unionGuard<string | null | undefined>(
+  isString,
+  isNullOrUndefined,
+);
 
 isNullOrUndefined(null); // Resolves to true
 isNullOrUndefined(undefined); // Resolves to true
