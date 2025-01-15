@@ -66,7 +66,7 @@ mfiTg(b); // resolves to false
 
 The purpose of the project was to make it easier to avoid dreaded type-related errors like `undefined is not an object` and other problems that arise when you think you have one data type, but you, in fact, have another.
 
-The package does two separate things that eventually accomplish the same goal, depending on whether you're using TypeScript or JavaScript.
+The package does two separate things that eventually accomplish the same goal, depending on whether you're using TypeScript or JavaScript. For TypeScript, the type guards will let the engine know that a variable is of a specific type. For JavaScript, the functions just return booleans, so you can use if statements to check what you have. Ultimately, the functions will let you know what kinds of data you have (or don't have).
 
 All type guards in this package are written to use [TypeScript's type predicates](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates). This means that you can drop a typeguard in and if it resolves to `true`, TypeScript will assume that the value in question is what you say it is. This means that you can slide this into the TS type system without any kludges. They also work well with a JS project using JSDoc to annotate types.
 
