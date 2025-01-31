@@ -356,9 +356,9 @@ const udGuard = typeGuardGenerator<UserData>({
 const udObjGuard = indexedObjectTypeGuardGenerator<UserCollection>(udGuard);
 
 const myObj = {
-  katie: { id: '1', name: 'Katie', balanced: 20 },
+  katie: { id: '1', name: 'Katie', balance: 20 },
   jonathan: { id: '2', name: 'Jonathan', balance: 10 },
-  franklin: { id: '3', name: 'Franklin', balanced: 15 },
+  franklin: { id: '3', name: 'Franklin', balance: 15 },
 };
 
 udObjGuard(myObj); // resolves to true
@@ -403,13 +403,14 @@ const acArr = [
   new AClass(),
 ];
 
-const fakeArr = [
+const badArr = [
   { a: () => 'a' }
   { a: () => 'a' }
+  new AClass(),
 ];
 
 isAClassArr(acArr); // resolves to true
-isAClassArr(fakeArr); // resolves to false
+isAClassArr(badArr); // resolves to false
 ```
 
 `unionGuard` allows you to combine several type guards into a single function that type guards for TypeScript union types. This allows you to test for things like: "is String or undefined" or "is number or number array", etc. You can even combine union type guards.
