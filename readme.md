@@ -439,3 +439,47 @@ isStringOrNullOrUndefined(null); // Resolves to true
 isStringOrNullOrUndefined(undefined); // Resolves to true
 isStringOrNullOrUndefined(''); // Resolves to true
 ```
+
+## Use with JavaScript & JSDoc
+
+Most of the examples above use TypeScript and its generic type variables. The generic type that's used in the function call provides information about the type guard and what type it's guarding against.
+
+For instance, we might have a typeguard for an interface that we wish for our responses to conform to:
+
+```ts
+// API Response interface. Responses should conform to this structure
+interface APIResponse {
+  id: string;
+  size: number;
+  name: string;
+}
+
+// Generated type guard
+const artg = typeGuardGenerator<APIResponse>({
+  id: isString,
+  size: isNumber,
+  name: isString,
+});
+```
+
+This works because typeGuardGenerator accepts a generic type variable (in this case, `APIResponse`) so that the function signature can determine what type the value actually is. If we omit the APIResponse type, the signature changes to `input is unknown`, which isn't terribly useful.
+
+JavaScript has no such generic type variable and, as such, requires that you annotate the type in JSDoc. The above example would be translated to JavaScript like so:
+
+```js
+/**
+ * @typedef {object} APIResponse
+ * @property {string} id
+ * @property {number} size
+ * @property {string} name
+ */
+
+/** @type {(input: unknown) => input is APIResponse} */
+const artg = typeGuardGenerator({
+  id: isString,
+  size: isNumber,
+  name: isString,
+});
+```
+
+I do recommend using ESLint with the [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc) plugin and configured with `'flat/recommended-typescript'`.
