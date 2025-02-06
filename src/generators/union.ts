@@ -1,5 +1,5 @@
 /**
- * Generators a type guard for union types, i.e. types that have the
+ * Generates a type guard for union types, i.e. types that have the
  * pipe operator `|` in them. It accepts multiple type guards and
  * returns a new type guard that checks if the input matches any of
  * the given type guards.

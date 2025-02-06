@@ -39,6 +39,7 @@ export function isNull(input: unknown): input is null {
 export function isNullOrUndefined(input: unknown): input is null | undefined {
   return isUndefined(input) || isNull(input);
 }
+export const isUndefinedOrNull = isNullOrUndefined;
 
 /**
  * Determines if the input is a BigInt

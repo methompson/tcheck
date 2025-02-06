@@ -93,7 +93,7 @@ The primitive type guards test for all of JavaScript's basic primitive types:
 - `isBigInt` - bigint
 - `isSymbol` - symbol
 
-Plus `isNullOrUndefined` to test for either null or undefined.
+Plus `isNullOrUndefined` and its alias `isUndefinedOrNull` to test for either null or undefined.
 
 ### Examples
 
