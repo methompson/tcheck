@@ -2,7 +2,7 @@
 
 ### A Simple JS & TS Type Checking Library.
 
-Welcome to Check. Check is a simple type checking library that aims to make it easier to determine what kinds of variables and data you have in JavaScript and TypeScript alike.
+Welcome to TCheck. TCheck is a simple type checking library that aims to make it easier to determine what kinds of variables and data you have in JavaScript and TypeScript alike.
 
 ### Basic Examples
 
