@@ -1,6 +1,6 @@
 {
   "name": "tcheck",
-  "version": "1.1.6",
+  "version": "1.2.0",
   "description": "A TypeCheck / TypeGuard Library",
   "type": "module",
   "main": "dist/index.cjs",
@@ -29,7 +29,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/methompson/tcheck"
+    "url": "git+https://github.com/methompson/tcheck.git"
   },
   "homepage": "https://github.com/methompson/tcheck",
   "author": "Mathew E. Thompson",
