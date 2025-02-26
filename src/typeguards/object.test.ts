@@ -1,6 +1,16 @@
-import { isFunction, isInstanceOf, isObject, isRecord } from './object';
-
-function hello() {}
+import { isArrayOfGenerator } from '../generators/instanceOfGenerator';
+import { typeGuardGenerator } from '../generators/typeGuardGenerator';
+import { unionGuard } from '../generators/union';
+import {
+  isFunction,
+  isObjectOf,
+  isInstanceOf,
+  isInterfaceOf,
+  isInterfaceOfStrict,
+  isObject,
+  isRecord,
+} from './object';
+import { isBoolean, isNumber, isString, isUndefined } from './primitives';
 
 describe('object checking', () => {
   describe('isRecord', () => {
@@ -201,6 +211,334 @@ describe('object checking', () => {
       expect(isInstanceOf<AClass>(aObj, AClass)).toBe(false);
     });
   });
+
+  describe('isInterfaceOf', () => {
+    test('returns true for an object that conforms to the interface', () => {
+      interface MyFunInterface {
+        key: string;
+        num: number;
+        bool: boolean;
+      }
+      const input = {
+        key: 'hello',
+        num: 1,
+        bool: true,
+      };
+      const result = isInterfaceOf<MyFunInterface>(input, {
+        key: isString,
+        num: isNumber,
+        bool: isBoolean,
+      });
+
+      expect(result).toBe(true);
+    });
+
+    test('The typeguard can be used in a nested interface', () => {
+      interface ValueSet {
+        value: string;
+        isTrue: boolean;
+      }
+
+      interface MyFunInterface {
+        key: string;
+        num: number;
+        bool: boolean;
+        valueSet: ValueSet;
+      }
+
+      const vsCmn = {
+        value: isString,
+        isTrue: isBoolean,
+      };
+
+      const mfiCommon = {
+        key: isString,
+        num: isNumber,
+        bool: isBoolean,
+        valueSet: typeGuardGenerator<ValueSet>(vsCmn),
+      };
+
+      const trueVal = {
+        key: 'key',
+        num: 96,
+        bool: false,
+        valueSet: { value: 'hello', isTrue: true },
+      };
+
+      const falseVal = {
+        key: 'key',
+        num: 96,
+        bool: false,
+        valueSet: { value: 'hello', isTrue: 'true' },
+      };
+
+      const result1 = isInterfaceOf<MyFunInterface>(trueVal, mfiCommon);
+      const result2 = isInterfaceOf<MyFunInterface>(falseVal, mfiCommon);
+
+      expect(result1).toBe(true);
+      expect(result2).toBe(false);
+    });
+
+    test('returns false for an object that deviates from the interface', () => {
+      interface MyFunInterface {
+        key: string;
+        num: number;
+        bool: boolean;
+      }
+
+      const input = {
+        key: 'hello',
+        num: 1,
+        bool: 'true',
+      };
+
+      const result = isInterfaceOf<MyFunInterface>(input, {
+        key: isString,
+        num: isNumber,
+        bool: isBoolean,
+      });
+
+      expect(result).toBe(false);
+    });
+
+    test('examples', () => {
+      interface Fun {
+        a: string;
+        b: number;
+        c: boolean;
+      }
+
+      const goodInput = {
+        a: 'a',
+        b: 1,
+        c: true,
+      };
+
+      const badInput = {
+        a: 'a',
+        b: 1,
+        c: true,
+        d: 'extra',
+      };
+
+      expect(
+        isInterfaceOfStrict<Fun>(goodInput, {
+          a: isString,
+          b: isNumber,
+          c: isBoolean,
+        }),
+      ).toBe(true); // resolves to true
+      expect(
+        isInterfaceOfStrict<Fun>(badInput, {
+          a: isString,
+          b: isNumber,
+          c: isBoolean,
+        }),
+      ).toBe(false); // resolves to false
+    });
+  });
+
+  describe('isInterfaceOfStrict', () => {
+    test('returns true for an object that conforms to the interface', () => {
+      interface MyFunInterface {
+        key: string;
+        num: number;
+        bool: boolean;
+      }
+      const input = {
+        key: 'hello',
+        num: 1,
+        bool: true,
+      };
+      const result = isInterfaceOfStrict<MyFunInterface>(input, {
+        key: isString,
+        num: isNumber,
+        bool: isBoolean,
+      });
+
+      expect(result).toBe(true);
+    });
+
+    test('returns false for an object that deviates from the interface', () => {
+      interface MyFunInterface {
+        key: string;
+        num: number;
+        bool: boolean;
+      }
+
+      const input = {
+        key: 'hello',
+        num: 1,
+        bool: 'true',
+      };
+
+      const result = isInterfaceOfStrict<MyFunInterface>(input, {
+        key: isString,
+        num: isNumber,
+        bool: isBoolean,
+      });
+
+      expect(result).toBe(false);
+    });
+
+    test('returns false for an object that has extra keys', () => {
+      interface MyFunInterface {
+        key: string;
+        num: number;
+        bool: boolean;
+      }
+
+      const input = {
+        key: 'hello',
+        num: 1,
+        bool: true,
+        extra: 'extra',
+      };
+
+      const result = isInterfaceOfStrict<MyFunInterface>(input, {
+        key: isString,
+        num: isNumber,
+        bool: isBoolean,
+      });
+
+      expect(result).toBe(false);
+    });
+
+    test('returns false for an object that is missing keys', () => {
+      interface MyFunInterface {
+        key: string;
+        num: number;
+        bool: boolean;
+      }
+
+      const input = {
+        key: 'hello',
+        num: 1,
+      };
+
+      const result = isInterfaceOfStrict<MyFunInterface>(input, {
+        key: isString,
+        num: isNumber,
+        bool: isBoolean,
+      });
+
+      expect(result).toBe(false);
+    });
+
+    test('examples', () => {
+      interface Fun {
+        a: string;
+        b: number;
+        c: boolean;
+      }
+
+      const goodInput = {
+        a: 'a',
+        b: 1,
+        c: true,
+      };
+
+      const badInput = {
+        a: 'a',
+        b: 1,
+        c: true,
+        d: 'extra',
+      };
+
+      expect(
+        isInterfaceOfStrict<Fun>(goodInput, {
+          a: isString,
+          b: isNumber,
+          c: isBoolean,
+        }),
+      ).toBe(true); // resolves to true
+      expect(
+        isInterfaceOfStrict<Fun>(badInput, {
+          a: isString,
+          b: isNumber,
+          c: isBoolean,
+        }),
+      ).toBe(false); // resolves to false
+    });
+  });
+
+  describe('isObjectOf', () => {
+    test('returns true for an object of primitives', () => {
+      const input = {
+        a: 'a',
+        b: 'b',
+        c: 'c',
+      };
+
+      const result = isObjectOf<string>(input, isString);
+      expect(result).toBe(true);
+    });
+
+    test('returns false for an object that deviates from the type', () => {
+      const input = {
+        a: 'a',
+        b: 'b',
+        c: 1,
+      };
+
+      const result = isObjectOf<string>(input, isString);
+      expect(result).toBe(false);
+    });
+
+    test('can use complex typeguards too', () => {
+      type ValueSet = string | string[] | undefined;
+      const isStringArray = isArrayOfGenerator(isString);
+      const guard = unionGuard<ValueSet>(isString, isStringArray, isUndefined);
+
+      // Test the guard
+      expect(guard('hello')).toBe(true);
+      expect(guard(['hello', 'world'])).toBe(true);
+      expect(guard(undefined)).toBe(true);
+
+      const input = {
+        a: 'a',
+        b: ['b', 'c'],
+        c: undefined,
+      };
+
+      const result = isObjectOf<ValueSet>(input, guard);
+      expect(result).toBe(true);
+    });
+
+    test('examples', () => {
+      const boolObj = {
+        a: true,
+        b: false,
+        c: true,
+      };
+
+      const badObj = {
+        a: 1,
+        b: 'b',
+        c: true,
+      };
+
+      expect(isObjectOf<boolean>(boolObj, isBoolean)).toBe(true); // resolves to true
+      expect(isObjectOf<boolean>(badObj, isBoolean)).toBe(false); // resolves to false
+
+      interface Fun {
+        a: string;
+        b: number;
+      }
+      const isFun = typeGuardGenerator<Fun>({
+        a: isString,
+        b: isNumber,
+      });
+
+      const obj = {
+        a: { a: 'a', b: 1 },
+        b: { a: 'b', b: 2 },
+        c: { a: 'c', b: 3 },
+      };
+
+      expect(isObjectOf<Fun>(obj, isFun)).toBe(true);
+    });
+  });
 });
 
 describe.skip('benchmarking object checking', () => {
@@ -261,6 +599,7 @@ describe.skip('benchmarking object checking', () => {
       reResults.reduce((acc, curr) => acc + (curr.end - curr.start), 0) /
       reResults.length;
 
+    // eslint-disable-next-line no-console
     console.log({
       startsWithDiff: swAvg,
       regexDiff: reAvg,

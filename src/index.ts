@@ -5,6 +5,9 @@ export {
   isObject,
   isFunction,
   isInstanceOf,
+  isInterfaceOf,
+  isInterfaceOfStrict,
+  isObjectOf,
 } from './typeguards/object';
 
 export {
@@ -27,7 +30,9 @@ export {
 export {
   typeGuardTestGenerator,
   typeGuardGenerator,
+  strictTypeGuardGenerator,
   indexedObjectTypeGuardGenerator,
+  isObjectOfGenerator,
 } from './generators/typeGuardGenerator';
 
 export { unionGuard } from './generators/union';

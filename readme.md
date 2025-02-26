@@ -201,6 +201,99 @@ const a = new AClass();
 expect(isInstanceOf(a, AClass)).toBe(true);
 ```
 
+`isInterfaceOf` allows you to check objects in an ad-hoc fashion. You can check that an object conforms to a specific interface.
+
+### Examples
+
+```ts
+interface Fun {
+  a: string;
+  b: number;
+  c: boolean;
+}
+
+const goodInput = {
+  a: 'a',
+  b: 1,
+  c: true,
+};
+
+const badInput = {
+  a: 1,
+  b: false,
+  c: 'true',
+};
+
+isInterfaceOf<Fun>(goodInput, { a: isString, b: isNumber, c: isBoolean }); // resolves to true
+isInterfaceOf<Fun>(badInput, { a: isString, b: isNumber, c: isBoolean }); // resolves to false
+```
+
+`isInterfaceOfStrict` allows you to check objects just like `isInterfaceOf`, but this function returns false if the input contains more keys than the interface should have.
+
+### Examples
+
+```ts
+interface Fun {
+  a: string;
+  b: number;
+  c: boolean;
+}
+
+const goodInput = {
+  a: 'a',
+  b: 1,
+  c: true,
+};
+
+const badInput = {
+  a: 'a',
+  b: 1,
+  c: true,
+  d: 'extra',
+};
+
+isInterfaceOfStrict<Fun>(goodInput, { a: isString, b: isNumber, c: isBoolean }); // resolves to true
+isInterfaceOfStrict<Fun>(badInput, { a: isString, b: isNumber, c: isBoolean }); // resolves to false
+```
+
+`isObjectOf` allows you to check that all values of an object conform to a specific type.
+
+### Examples
+
+```ts
+const boolObj = {
+  a: true,
+  b: false,
+  c: true,
+};
+
+const badObj = {
+  a: 1,
+  b: 'b',
+  c: true,
+};
+
+isObjectOf<boolean>(boolObj, isBoolean); // resolves to true
+isObjectOf<boolean>(badObj, isBoolean); // resolves to false
+
+interface Fun {
+  a: string;
+  b: number;
+}
+const isFun = typeGuardGenerator<Fun>({
+  a: isString,
+  b: isNumber,
+});
+
+const obj = {
+  a: { a: 'a', b: 1 },
+  b: { a: 'b', b: 2 },
+  c: { a: 'c', b: 3 },
+};
+
+isObjectOf<Fun>(obj, isFun); // resolves to true
+```
+
 ## Arrays
 
 Check provides two functions for checking Arrays, `isArray` and `isArrayOf`. `isArray` allows you to check if a value is actually an array. This is useful over `Array.isArray`, because by default it sets the value's type to `any[]`, whereas `isArray` will set the value's type to `unknown[]`. This allows slightly more permissive configurations to lint your code and force you to check the contents of your array.
@@ -234,7 +327,8 @@ Check provides several generators for generating different kinds of guards:
 
 - `typeGuardTestGenerator` generates a new function that tests an object and returns an array of strings indicating what values are wrong within the object
 - `typeGuardGenerator` generates a new function that checks that an object conforms to a specific structure
-- `indexedObjectTypeGuardGenerator` generates a new function that checks if all the values of an object conform to a specific structure. Useful for objects where the key is a name, but not standardized.
+- `strictTypeGuardGenerator` generates a new function that checks that an object conforms to a specific structure. This function differs from `typeGuardGenerator` in that it will return false if the object contains extraneous keys that aren't part of the interface.
+- `isObjectOfGenerator` generates a new function that checks if all the values of an object conform to a specific structure. Useful for objects where the key is a name, but not standardized.
 - `isInstanceOfGenerator` generates a new function that checks if a value is an instance of a class.
 - `isArrayOfGenerator` generates a new function that checks if an array contains values that conform to specific type guards
 - `unionGuard` generates a new function that checks that a value conforms to one of several different guards. This is useful for union types, i.e. those that may be one of several types.
@@ -297,7 +391,7 @@ interface Fun {
   c: boolean;
 }
 
-const funTest = typeGuardGenerator({
+const funTest = typeGuardGenerator<Fun>({
   a: isString,
   b: isNumber,
   c: isBoolean,
@@ -305,6 +399,27 @@ const funTest = typeGuardGenerator({
 
 funTest({ a: 'a', b: 0, c: true }); // resolves to true
 funTest({ a: 'a', b: 0 }); // resolves to false
+funTest('string'); // resolves to false
+```
+
+`strictTypeGuardGenerator` Generates a typeguard that takes the input as your test. Thre result of the function call is another function that can be used to type guard your interfaces. Objects that have extra keys will also resolve to false.
+
+```ts
+interface Fun {
+  a: string;
+  b: number;
+  c: boolean;
+}
+
+const funTest = strictTypeGuardGenerator<Fun>({
+  a: isString,
+  b: isNumber,
+  c: isBoolean,
+});
+
+funTest({ a: 'a', b: 0, c: true }); // resolves to true
+funTest({ a: 'a', b: 0 }); // resolves to false
+funTest({ a: 'a', b: 0, c: true, d: 'something' }); // resolves to false
 funTest('string'); // resolves to false
 ```
 
@@ -335,7 +450,7 @@ outerTest(good); // resolves to true
 outerTest(bad); // resolves to false
 ```
 
-`indexedObjectTypeGuardGenerator` Generates a typeguard that takes the input as your test. The result of the function call is another function that can be used to type guard an object of indeterminate keys and specific values.
+`isObjectOfGenerator` Generates a typeguard that takes the input as your test. The result of the function call is another function that can be used to type guard an object of indeterminate keys and specific values.
 
 ```ts
 interface UserData {
@@ -353,7 +468,7 @@ const udGuard = typeGuardGenerator<UserData>({
   balance: isNumber,
 });
 
-const udObjGuard = indexedObjectTypeGuardGenerator<UserCollection>(udGuard);
+const udObjGuard = isObjectOfGenerator<UserCollection>(udGuard);
 
 const myObj = {
   katie: { id: '1', name: 'Katie', balance: 20 },

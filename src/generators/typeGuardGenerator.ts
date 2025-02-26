@@ -1,5 +1,10 @@
 import { isArray } from '../typeguards/array';
-import { isRecord } from '../typeguards/object';
+import {
+  isInterfaceOf,
+  isInterfaceOfStrict,
+  isObjectOf,
+  isRecord,
+} from '../typeguards/object';
 
 // The typeGuardGeneratorInterface is an object where the keys are the keys of an
 // interface/object that you are type checking and the values are the type
@@ -72,17 +77,24 @@ export function typeGuardTestGenerator(
  * typeguard output. This can be used to type an unknown value.
  */
 export function typeGuardGenerator<T>(
-  input: TypeGuardGeneratorInput,
+  tgInput: TypeGuardGeneratorInput,
 ): (input: unknown) => input is T {
-  return (valueInput: unknown): valueInput is T => {
-    if (!isRecord(valueInput)) {
-      return false;
-    }
+  return (valueInput: unknown): valueInput is T =>
+    isInterfaceOf<T>(valueInput, tgInput);
+}
 
-    return Object.entries(input).every(
-      ([key, value]) => value?.(valueInput[key]) ?? false,
-    );
-  };
+/**
+ * Exports a function that can test if an object conforms to a
+ * given interface. The output is a boolean and returns the TS
+ * typeguard output. This function differs from the typeGuardGenerator
+ * because it will also make sure there are no extra values
+ * in the object that are not part of the interface.
+ */
+export function strictTypeGuardGenerator<T>(
+  tgInput: TypeGuardGeneratorInput,
+): (input: unknown) => input is T {
+  return (valueInput: unknown): valueInput is T =>
+    isInterfaceOfStrict<T>(valueInput, tgInput);
 }
 
 /**
@@ -91,18 +103,16 @@ export function typeGuardGenerator<T>(
  * type.
  * e.g. { [key: string]: boolean }
  * e.g. { [key: string]: { [key: string]: boolean } }
+ * e.g. Record<string, boolean>
  *
  * This test will confirm that the object's values are of
  * the correct type.
  */
 export function indexedObjectTypeGuardGenerator<T>(
   tg: (input: unknown) => boolean,
-): (input: unknown) => input is T {
-  return (valueInput: unknown): valueInput is T => {
-    if (!isRecord(valueInput)) {
-      return false;
-    }
-
-    return Object.values(valueInput).every(tg);
-  };
+): (input: unknown) => input is Record<string | number, T> {
+  return (valueInput: unknown): valueInput is Record<string | number, T> =>
+    isObjectOf(valueInput, tg);
 }
+
+export const isObjectOfGenerator = indexedObjectTypeGuardGenerator;

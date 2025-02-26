@@ -36,3 +36,64 @@ export function isInstanceOf<T>(
 ): input is T {
   return typeof input === 'object' && input instanceof constructor;
 }
+
+/**
+ * Type guard to test if an object conforms to a given interface.
+ */
+export function isInterfaceOf<T>(
+  valueInput: unknown,
+  tgInput: Record<string, (input: unknown) => boolean>,
+): valueInput is T {
+  if (!isRecord(valueInput)) {
+    return false;
+  }
+
+  return Object.entries(tgInput).every(
+    ([key, value]) => value?.(valueInput[key]) ?? false,
+  );
+}
+
+/**
+ * Type guard to test if an object conforms to a given interface.
+ * This function differs from the `isInterfaceOf` function because
+ * it will also make sure there are no extra values in the object
+ * that are not part of the interface.
+ */
+export function isInterfaceOfStrict<T>(
+  valueInput: unknown,
+  tgInput: Record<string, (input: unknown) => boolean>,
+): valueInput is T {
+  if (!isRecord(valueInput)) {
+    return false;
+  }
+
+  const inputKeys = Object.keys(valueInput);
+  const tgKeys = Object.keys(tgInput);
+
+  if (tgKeys.length !== inputKeys.length) {
+    return false;
+  }
+
+  if (!tgKeys.every((key) => inputKeys.includes(key))) {
+    return false;
+  }
+
+  return isInterfaceOf<T>(valueInput, tgInput);
+}
+
+/**
+ * Type guard to test if an object has non-specific keys that
+ * conform to a specific interface or type.
+ * e.g. { [key: string]: boolean }
+ * e.g. { [key: string]: { [key: string]: boolean } }
+ */
+export function isObjectOf<T>(
+  input: unknown,
+  tg: (input: unknown) => boolean,
+): input is Record<string | number, T> {
+  if (!isRecord(input)) {
+    return false;
+  }
+
+  return Object.values(input).every(tg);
+}
