@@ -36,3 +36,5 @@ export {
 } from './generators/typeGuardGenerator';
 
 export { unionGuard } from './generators/union';
+
+export { TypeGuard } from './typeguards/type';
