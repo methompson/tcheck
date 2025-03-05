@@ -1,6 +1,7 @@
-import { TypeGuard } from './type';
 import { typeGuardGenerator } from '../generators/typeGuardGenerator';
 import { isNumber, isString } from './primitives';
+
+/** @typedef {import('./type').TypeGuard} TypeGuard */
 
 /**
  * @typedef {object} TestType
@@ -16,6 +17,11 @@ describe('types', () => {
       value: isNumber,
     });
 
-    expect(true).toBe(true);
+    const value = {
+      key: 'key',
+      value: 1,
+    };
+
+    expect(tg(value)).toBe(true);
   });
 });

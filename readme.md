@@ -598,4 +598,15 @@ const artg = typeGuardGenerator({
 });
 ```
 
-I do recommend using ESLint with the [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc) plugin and configured with `'flat/recommended-typescript'`.
+A special `TypeGuard` generic type is provided in the package to simplify the type annotation of the function:
+
+```js
+/** @type {import('tcheck').TypeGuard<APIResponse>} */
+const artg = typeGuardGenerator({
+  id: isString,
+  size: isNumber,
+  name: isString,
+});
+```
+
+I do recommend using ESLint with the [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc) plugin and configured with `'flat/recommended-typescript'`. When you configure your project with this package, it enforces typing via JSDoc in JavaScript, making it directly compatible with Node without needing a transpile process immediately prior.
