@@ -317,6 +317,10 @@ isArrayOf<string>(var2, isString); // Resolves to true
 isArrayOf<number>(var3, isNumber); // Resolves to false
 ```
 
+## Enums
+
+Enums are a great way to constrain a value to a subset of strings or numbers. However, at the end of the day, TS enums are just objects of strings and numbers. One common action that is frequently taken is to receive a string value that should be part of an enum. `isEnumValue` is introduced to make it easy to confirm that a value is, in fact, a part of the enum.
+
 ## Generators
 
 The generators are where we get to the real power of this library. The generators allow us to create our own type guards for more complex data structures. Checking that a string is a string is trivial in the grand scheme of things, but checking that an object conforms to an interface can be a bit tedious. It gets more difficult the more we nest the data. We can offload this type checking to a generator to provide a simpler means to type guard with complex types.

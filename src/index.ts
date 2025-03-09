@@ -35,6 +35,8 @@ export {
   isObjectOfGenerator,
 } from './generators/typeGuardGenerator';
 
+export { isEnumValue, isEnumValueGenerator } from './typeguards/enum';
+
 export { unionGuard } from './generators/union';
 
 export { TypeGuard } from './typeguards/type';
