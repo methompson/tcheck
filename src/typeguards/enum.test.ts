@@ -13,7 +13,7 @@ enum TestEnumString {
 }
 
 describe('enum', () => {
-  describe('isEnum', () => {
+  describe('isEnumValue', () => {
     test('should return true for number enum', () => {
       expect(isEnumValue(0, TestEnum)).toBe(true);
       expect(isEnumValue(1, TestEnum)).toBe(true);
@@ -43,7 +43,7 @@ describe('enum', () => {
     });
   });
 
-  describe('isEnuValueGenerator', () => {
+  describe('isEnumValueGenerator', () => {
     const isTestEnum = isEnumValueGenerator(TestEnum);
     const isTestEnumString = isEnumValueGenerator(TestEnumString);
 

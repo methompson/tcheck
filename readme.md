@@ -321,6 +321,30 @@ isArrayOf<number>(var3, isNumber); // Resolves to false
 
 Enums are a great way to constrain a value to a subset of strings or numbers. However, at the end of the day, TS enums are just objects of strings and numbers. One common action that is frequently taken is to receive a string value that should be part of an enum. `isEnumValue` is introduced to make it easy to confirm that a value is, in fact, a part of the enum.
 
+### Example
+
+```ts
+enum Direction {
+  Up = 'up';
+  Down = 'down';
+  Left = 'left';
+  Right = 'right';
+}
+
+function goDirection(input: Direction) {
+  // Do something
+}
+
+// This is a plain string and not a Direction type
+const input = 'up';
+
+// Discovers if input is a Direction and runs the function
+// Should run, because value is equivalent to Direction.Up
+if (isEnumValue(input, Direction)) {
+  goDirection(input);
+}
+```
+
 ## Generators
 
 The generators are where we get to the real power of this library. The generators allow us to create our own type guards for more complex data structures. Checking that a string is a string is trivial in the grand scheme of things, but checking that an object conforms to an interface can be a bit tedious. It gets more difficult the more we nest the data. We can offload this type checking to a generator to provide a simpler means to type guard with complex types.
@@ -336,6 +360,7 @@ Check provides several generators for generating different kinds of guards:
 - `isInstanceOfGenerator` generates a new function that checks if a value is an instance of a class.
 - `isArrayOfGenerator` generates a new function that checks if an array contains values that conform to specific type guards
 - `unionGuard` generates a new function that checks that a value conforms to one of several different guards. This is useful for union types, i.e. those that may be one of several types.
+- `isEnumGenerator` generates a function that can test Enum values.
 
 ### Examples
 
@@ -558,6 +583,30 @@ isNullOrUndefined(''); // Resolves to false
 isStringOrNullOrUndefined(null); // Resolves to true
 isStringOrNullOrUndefined(undefined); // Resolves to true
 isStringOrNullOrUndefined(''); // Resolves to true
+```
+
+`isEnumValueGenerator` Allows you to create a function that tests if values are part of an enum, just like using `isEnumValue`.
+
+```ts
+enum Direction {
+  Up = 'up';
+  Down = 'down';
+  Left = 'left';
+  Right = 'right';
+}
+
+const isDirection = isEnumValueGenerator(Direction);
+
+function goDirection(input: Direction) {
+  // Do something
+}
+
+const value = 'up';
+
+// Should run, because value is equivalent to Direction.Up
+if (isDirection(value)) {
+  goDirection(value);
+}
 ```
 
 ## Use with JavaScript & JSDoc
