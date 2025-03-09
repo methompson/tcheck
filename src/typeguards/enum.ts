@@ -23,5 +23,6 @@ export function isEnumValueGenerator<Type extends PotentialEnum>(
 ) {
   // TODO may be able to make this more efficient with
   // a map of values to keys
-  return (input: unknown): input is Type => isEnumValue(input, enumValue);
+  return (input: unknown): input is Type[keyof Type] =>
+    isEnumValue(input, enumValue);
 }
