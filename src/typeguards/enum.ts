@@ -1,6 +1,6 @@
 import { unionGuard } from '../generators/union';
 import { isRecord } from './object';
-import { isNumber, isString, isUndefined } from './primitives';
+import { isNumber, isString } from './primitives';
 
 interface PotentialEnum {
   [key: string]: number | string;
