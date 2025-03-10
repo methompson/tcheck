@@ -8,13 +8,14 @@ interface PotentialEnum {
 const isStringOrNumber = unionGuard<string | number>(isString, isNumber);
 
 export function isEnumValue<Type extends PotentialEnum>(
-  input: unknown,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  input: any,
   enumValue: Type,
 ): input is Type[keyof Type] {
   return (
     isStringOrNumber(input) &&
     isRecord(enumValue) &&
-    !isUndefined(enumValue[input])
+    Object.values(enumValue).includes(input)
   );
 }
 

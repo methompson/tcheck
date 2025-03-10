@@ -7,9 +7,9 @@ enum TestEnum {
 }
 
 enum TestEnumString {
-  Value1 = 'Value1',
-  Value2 = 'Value2',
-  Value3 = 'Value3',
+  Value1 = 'value1',
+  Value2 = 'value2',
+  Value3 = 'value3',
 }
 
 describe('enum', () => {
@@ -25,16 +25,16 @@ describe('enum', () => {
         expect(input).toBe(TestEnumString.Value1);
       }
 
-      const val: unknown = 'Value1';
+      const val: unknown = 'value1';
       if (isEnumValue(val, TestEnumString)) {
         testMyGuard(val);
       }
     });
 
     test('should return true for string enum', () => {
-      expect(isEnumValue('Value1', TestEnumString)).toBe(true);
-      expect(isEnumValue('Value2', TestEnumString)).toBe(true);
-      expect(isEnumValue('Value3', TestEnumString)).toBe(true);
+      expect(isEnumValue('value1', TestEnumString)).toBe(true);
+      expect(isEnumValue('value2', TestEnumString)).toBe(true);
+      expect(isEnumValue('value3', TestEnumString)).toBe(true);
     });
 
     test('should return false for non-enum', () => {
@@ -54,9 +54,21 @@ describe('enum', () => {
     });
 
     test('should return true for string enum values', () => {
-      expect(isTestEnumString('Value1')).toBe(true);
-      expect(isTestEnumString('Value2')).toBe(true);
-      expect(isTestEnumString('Value3')).toBe(true);
+      expect(isTestEnumString('value1')).toBe(true);
+      expect(isTestEnumString('value2')).toBe(true);
+      expect(isTestEnumString('value3')).toBe(true);
+    });
+
+    test('Should be able to use a function with the type', () => {
+      expect.assertions(1);
+      function testMyGuard(input: TestEnumString) {
+        expect(input).toBe(TestEnumString.Value1);
+      }
+
+      const val: unknown = 'value1';
+      if (isTestEnumString(val)) {
+        testMyGuard(val);
+      }
     });
 
     test('should return false for non-enum values', () => {
