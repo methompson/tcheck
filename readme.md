@@ -360,7 +360,7 @@ Check provides several generators for generating different kinds of guards:
 - `isInstanceOfGenerator` generates a new function that checks if a value is an instance of a class.
 - `isArrayOfGenerator` generates a new function that checks if an array contains values that conform to specific type guards
 - `unionGuard` generates a new function that checks that a value conforms to one of several different guards. This is useful for union types, i.e. those that may be one of several types.
-- `isEnumGenerator` generates a function that can test Enum values.
+- `isEnumValueGenerator` generates a function that can test Enum values.
 
 ### Examples
 
