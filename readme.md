@@ -296,7 +296,7 @@ isObjectOf<Fun>(obj, isFun); // resolves to true
 
 ## Arrays
 
-Check provides two functions for checking Arrays, `isArray` and `isArrayOf`. `isArray` allows you to check if a value is actually an array. This is useful over `Array.isArray`, because by default it sets the value's type to `any[]`, whereas `isArray` will set the value's type to `unknown[]`. This allows slightly more permissive configurations to lint your code and force you to check the contents of your array.
+tcheck provides two functions for checking Arrays, `isArray` and `isArrayOf`. `isArray` allows you to check if a value is actually an array. This is useful over `Array.isArray`, because by default it sets the value's type to `any[]`, whereas `isArray` will set the value's type to `unknown[]`. This allows slightly more permissive configurations to lint your code and force you to check the contents of your array.
 
 `isArrayOf` is a bit more specific. It checks if the contents of any array are of a specific type. This can be used with regular type guards as well as union type guards. This allows you to confirm that the Array is homogenous and of a specific type.
 
@@ -351,7 +351,7 @@ The generators are where we get to the real power of this library. The generator
 
 This functionality is compatible with both TypeScript AND JavaScript.
 
-Check provides several generators for generating different kinds of guards:
+tcheck provides several generators for generating different kinds of guards:
 
 - `typeGuardTestGenerator` generates a new function that tests an object and returns an array of strings indicating what values are wrong within the object
 - `typeGuardGenerator` generates a new function that checks that an object conforms to a specific structure
