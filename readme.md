@@ -1,4 +1,4 @@
-# TCheck
+# @metools/tcheck
 
 ### A Simple JS & TS Type Checking Library.
 
