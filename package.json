@@ -17,7 +17,7 @@
         "require": "./dist/index.cjs"
       },
       "import": "./dist/index.js",
-      "require": "./dist/idnex.cjs"
+      "require": "./dist/index.cjs"
     },
     "./package.json": "./package.json"
   },
