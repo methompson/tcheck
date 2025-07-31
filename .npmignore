@@ -16,4 +16,5 @@ src
 eslint.config.mjs
 jest.config.js
 tsconfig.json
+publish.sh
 tsup.config.ts
