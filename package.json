@@ -1,6 +1,6 @@
 {
-  "name": "tcheck",
-  "version": "1.2.5",
+  "name": "@metools/tcheck",
+  "version": "1.2.6",
   "description": "A TypeCheck / TypeGuard Library",
   "type": "module",
   "main": "dist/index.cjs",

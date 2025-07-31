@@ -31,6 +31,16 @@ function parse(response: unknown) {
 }
 ```
 
+You can also perform the opposite using the `not` function.
+
+```ts
+const myStr = 'hello, world';
+const myNum = 12345;
+
+isString(myStr); // Resolves to true
+not(isString)(myNum); // Resolves to true
+```
+
 You can use the functions to check more complex objects, interfaces, etc. If you've defined an interface and you want to make sure that an object you receive conforms to its requirements, you can generate a type guard:
 
 ```ts
@@ -63,6 +73,16 @@ const b = {
 mfiTg(a); // resolves to true
 mfiTg(b); // resolves to false
 ```
+
+You can also use these functions for filtering elements out of a list. For example, if you receive API data but the data is sometimes non-conforming to types you're expecting (which can be common during periods of heavy development), you may want to filter out the non-conforming data for other use cases. You can readily use the `Array.prototype.filter` function to get your data.
+
+```ts
+const mixedArray = [1, 'hello', true, null, 'world', undefined];
+const strArray = mixedArray.filter(isString);
+const nonStrArray = mixedArray.filter(not(isString));
+```
+
+In the above example, `strArray` becomes an array of strings and properly typed in TypeScript.
 
 The purpose of the project was to make it easier to avoid dreaded type-related errors like `undefined is not an object` and other problems that arise when you think you have one data type, but you, in fact, have another.
 
@@ -292,6 +312,26 @@ const obj = {
 };
 
 isObjectOf<Fun>(obj, isFun); // resolves to true
+```
+
+## Promises
+
+The promise type guards test for types associated with promises.
+
+- `isPromise` Checks whether the value is a `Promise` type
+- `isPromiseFulfilled` Checks if an element from `Promise.allSettled` has resolved
+- `isPromiseRejected` Checks if an element from `Promise.allSettled` errored or rejected
+
+`isPromiseFulfilled` and `isPromiseRejected` are especially useful for checking whether returned values from `Promise.allSettled` resolved or rejected. These values can be difficult to resolve without a proper typeguard.
+
+```ts
+const results = await Promise.allSettled([getUsers(), getTransactions()]);
+
+const resolvedPromises = results.filter(isPromiseFulfilled);
+const rejectedPromises = results.filter(isPromiseRejected);
+
+// Now, I can get all the resolved functions, extract data, etc.
+// I can also find the functions that failed and display an error banner
 ```
 
 ## Arrays
@@ -607,6 +647,77 @@ const value = 'up';
 if (isDirection(value)) {
   goDirection(value);
 }
+```
+
+## Not
+
+Sometimes you want an opposite type guard. I.e. you may want to retrieve all values that DON'T conform to a specific type. The `not` function accepts a typeguard as an input and returns a new typeguard-like function that returns true if the input value is NOT the type in question.
+
+```ts
+const myStr = 'hello, world';
+const myNum = 12345;
+
+const notString = not(isString);
+
+isString(myStr); // Resolves to true, because myStr is a string
+notString(myNum); // Resolves to true, because myNum is NOT a string
+```
+
+This can be used for filtering. Maybe you want to find all values that don't conform to a type for debugging purposes:
+
+```ts
+const mixedArray = [1, 'hello', true, null, 'world', undefined];
+const notStrings = mixedArray.filter(not(isString));
+```
+
+You don't have to save the function is you're using it in a one-off situation:
+
+```ts
+const myNum = 12345;
+const result = not(isString)(myNum);
+```
+
+It can be used with other typeguard functions in this project:
+
+```ts
+interface User {
+  id: string;
+  name: string;
+  age: number;
+}
+
+const isUser = typeGuardGenerator<User>({
+  id: isString,
+  name: isString,
+  age: isNumber,
+});
+
+const isUserOrStringOrBoolean = unionGuard<User | string | boolean>(
+  isUser,
+  isString,
+  isBoolean,
+);
+
+const mixedArray = [
+  {},
+  { id: '1' },
+  1,
+  'hello',
+  true,
+  null,
+  'world',
+  undefined,
+  {
+    id: 'a',
+    name: 'name',
+    age: 99,
+  },
+];
+
+const notUserStringBool = not(isUserOrStringOrBoolean);
+
+// Should include 5 elements, 2 objects, 1 number, null and undefined
+const values = mixedArray.filter(notUserStringBool);
 ```
 
 ## Use with JavaScript & JSDoc

@@ -22,6 +22,14 @@ export {
   isSymbol,
 } from './typeguards/primitives';
 
+export { not } from './typeguards/not';
+
+export {
+  isPromise,
+  isPromiseRejected,
+  isPromiseFulfilled,
+} from './typeguards/promises';
+
 export {
   isInstanceOfGenerator,
   isArrayOfGenerator,
