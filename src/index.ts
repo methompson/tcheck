@@ -1,4 +1,4 @@
-export { isArray, isArrayOf } from './typeguards/array';
+export { isArray, isArrayOf } from '@metools/tcheck';
 
 export {
   isRecord,
@@ -8,7 +8,7 @@ export {
   isInterfaceOf,
   isInterfaceOfStrict,
   isObjectOf,
-} from './typeguards/object';
+} from '@metools/tcheck';
 
 export {
   isString,
@@ -20,12 +20,12 @@ export {
   isUndefinedOrNull,
   isBigInt,
   isSymbol,
-} from './typeguards/primitives';
+} from '@metools/tcheck';
 
 export {
   isInstanceOfGenerator,
   isArrayOfGenerator,
-} from './generators/instanceOfGenerator';
+} from '@metools/tcheck';
 
 export {
   typeGuardTestGenerator,
@@ -33,10 +33,10 @@ export {
   strictTypeGuardGenerator,
   indexedObjectTypeGuardGenerator,
   isObjectOfGenerator,
-} from './generators/typeGuardGenerator';
+} from '@metools/tcheck';
 
-export { isEnumValue, isEnumValueGenerator } from './typeguards/enum';
+export { isEnumValue, isEnumValueGenerator } from '@metools/tcheck';
 
-export { unionGuard } from './generators/union';
+export { unionGuard } from '@metools/tcheck';
 
-export { TypeGuard } from './typeguards/type';
+export { TypeGuard } from '@metools/tcheck';
