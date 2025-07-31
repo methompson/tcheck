@@ -1,7 +1,10 @@
 import { typeGuardGenerator } from '../generators/typeGuardGenerator';
 import { isNumber, isString } from './primitives';
 
-/** @typedef {import('./type').TypeGuard} TypeGuard */
+/**
+ * @typedef {import('./type').TypeGuard<T>} TypeGuard
+ * @template T
+ */
 
 /**
  * @typedef {object} TestType
@@ -12,6 +15,21 @@ import { isNumber, isString } from './primitives';
 describe('types', () => {
   test('Checking linting', () => {
     /** @type {TypeGuard<TestType>} */
+    const tg = typeGuardGenerator({
+      key: isString,
+      value: isNumber,
+    });
+
+    const value = {
+      key: 'key',
+      value: 1,
+    };
+
+    expect(tg(value)).toBe(true);
+  });
+
+  test('Checking more linting', () => {
+    /** @type {import('./type').TypeGuard<TestType>} */
     const tg = typeGuardGenerator({
       key: isString,
       value: isNumber,

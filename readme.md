@@ -773,4 +773,20 @@ const artg = typeGuardGenerator({
 });
 ```
 
+Declaring a type in JS with JSDoc can be a little verbose, but can cut down on excessively verbose JSDoc typing using the `import` keyword. The below works with TypeScript & Eslint:
+
+```js
+/**
+ * @typedef {import('./type').TypeGuard<T>} TypeGuard
+ * @template T
+ */
+
+/** @type {TypeGuard<TestType>} */
+const artg = typeGuardGenerator({
+  id: isString,
+  size: isNumber,
+  name: isString,
+});
+```
+
 I do recommend using ESLint with the [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc) plugin and configured with `'flat/recommended-typescript'`. When you configure your project with this package, it enforces typing via JSDoc in JavaScript, making it directly compatible with Node without needing a transpile process immediately prior.
