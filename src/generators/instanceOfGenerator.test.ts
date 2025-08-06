@@ -1,8 +1,8 @@
 import {
   isArrayOfGenerator,
   isInstanceOfGenerator,
-} from './instanceOfGenerator';
-import { isString } from '../typeguards/primitives';
+} from '@/generators/instanceOfGenerator';
+import { isString } from '@/typeguards/primitives';
 
 describe('instanceOfGenerator', () => {
   describe('isInstanceOfGenerator', () => {

@@ -1,4 +1,4 @@
-import { TypeGuard } from './type';
+import { TypeGuard } from '@/utils/type';
 
 /**
  * Returns a function that takes an array of unknown values
@@ -22,12 +22,4 @@ export function separate<T>(
 
     return [is, isNot];
   };
-}
-
-const separateFunc: <T>(
-  typeguard: TypeGuard<T>,
-) => (val: unknown[]) => [T[], Exclude<unknown, T>[]] = separate;
-
-export function test() {
-  return separateFunc;
 }

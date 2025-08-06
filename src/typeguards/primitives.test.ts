@@ -7,7 +7,7 @@ import {
   isString,
   isSymbol,
   isUndefined,
-} from './primitives';
+} from '@/typeguards/primitives';
 
 describe('primitives', () => {
   describe('isString', () => {

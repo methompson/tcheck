@@ -1,5 +1,5 @@
-import { isString } from '../typeguards/primitives';
-import { separate } from './separate';
+import { isString } from '@/typeguards/primitives';
+import { separate } from '@/utils/separate';
 
 describe('separate', () => {
   it('should separate values based on the type guard', () => {

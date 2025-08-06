@@ -1,4 +1,4 @@
-import { isRecord } from './object';
+import { isRecord } from '@/typeguards/object';
 
 // Determines if the input is a Promise.
 export function isPromise(input: unknown): input is Promise<unknown> {

@@ -1,3 +1,5 @@
+import { TypeGuardInput } from '@/utils/type';
+
 /**
  * Generates a type guard for union types, i.e. types that have the
  * pipe operator `|` in them. It accepts multiple type guards and
@@ -11,7 +13,7 @@
  * isStringOrNumber(true); // false
  */
 export function unionGuard<T>(
-  ...guards: ((_input: unknown) => boolean)[]
+  ...guards: TypeGuardInput<unknown>[]
 ): (input: unknown) => input is T {
   return (input: unknown): input is T => guards.some((guard) => guard(input));
 }

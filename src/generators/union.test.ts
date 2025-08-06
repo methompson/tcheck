@@ -1,11 +1,11 @@
-import { isInstanceOf } from '../typeguards/object';
+import { isInstanceOf } from '@/typeguards/object';
 import {
   isNull,
   isNumber,
   isString,
   isUndefined,
-} from '../typeguards/primitives';
-import { unionGuard } from './union';
+} from '@/typeguards/primitives';
+import { unionGuard } from '@/generators/union';
 
 describe('Union type', () => {
   test('can be used to create a type guard for multiple types', () => {

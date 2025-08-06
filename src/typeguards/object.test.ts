@@ -1,6 +1,6 @@
-import { isArrayOfGenerator } from '../generators/instanceOfGenerator';
-import { typeGuardGenerator } from '../generators/typeGuardGenerator';
-import { unionGuard } from '../generators/union';
+import { isArrayOfGenerator } from '@/generators/instanceOfGenerator';
+import { typeGuardGenerator } from '@/generators/typeGuardGenerator';
+import { unionGuard } from '@/generators/union';
 import {
   isFunction,
   isObjectOf,
@@ -9,8 +9,13 @@ import {
   isInterfaceOfStrict,
   isObject,
   isRecord,
-} from './object';
-import { isBoolean, isNumber, isString, isUndefined } from './primitives';
+} from '@/typeguards/object';
+import {
+  isBoolean,
+  isNumber,
+  isString,
+  isUndefined,
+} from '@/typeguards/primitives';
 
 describe('object checking', () => {
   describe('isRecord', () => {

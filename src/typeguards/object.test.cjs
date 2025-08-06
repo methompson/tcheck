@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const { isInstanceOf } = require('./object');
+const { isInstanceOf } = require('@/typeguards/object');
 
 describe('isInstanceOf', () => {
   test('should return true if the input is an ES5 class', () => {

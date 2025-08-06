@@ -1,8 +1,8 @@
-import { not } from './not';
-import { isString, isNumber, isBoolean } from '../typeguards/primitives';
-import { typeGuardGenerator } from '../generators/typeGuardGenerator';
+import { not } from '@/utils/not';
+import { isString, isNumber, isBoolean } from '@/typeguards/primitives';
+import { typeGuardGenerator } from '@/generators/typeGuardGenerator';
 
-import { unionGuard } from '../generators/union';
+import { unionGuard } from '@/generators/union';
 
 describe('not', () => {
   test('Checks the opposite of the passed in type guard', () => {

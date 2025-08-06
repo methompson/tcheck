@@ -1,6 +1,6 @@
-import { isArrayOf } from '../typeguards/array';
-import { isInstanceOf } from '../typeguards/object';
-import { TypeGuard } from '../utils/type';
+import { isArrayOf } from '@/typeguards/array';
+import { isInstanceOf } from '@/typeguards/object';
+import { TypeGuard } from '@/utils/type';
 
 /**
  * Generates a type guard that checks if the input is an instance of the given
@@ -10,7 +10,7 @@ import { TypeGuard } from '../utils/type';
  */
 export function isInstanceOfGenerator<T>(
   constructor: new (...args: never[]) => T,
-): (input: unknown) => input is T {
+): TypeGuard<T> {
   return (input) => isInstanceOf<T>(input, constructor);
 }
 

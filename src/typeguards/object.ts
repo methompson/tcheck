@@ -1,4 +1,4 @@
-import { TypeGuard, TypeGuardGeneratorInput } from '../utils/type';
+import { TypeGuardGeneratorInput, TypeGuardInput } from '@/utils/type';
 
 /**
  * Checks if the value is an object. This function is very permissive,
@@ -91,7 +91,7 @@ export function isInterfaceOfStrict<T>(
  */
 export function isObjectOf<T>(
   input: unknown,
-  tg: TypeGuard<T>,
+  tg: TypeGuardInput<T>,
 ): input is Record<string | number, T> {
   if (!isRecord(input)) {
     return false;

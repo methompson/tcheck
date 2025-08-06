@@ -1,4 +1,4 @@
-import { isEnumValue, isEnumValueGenerator } from './enum';
+import { isEnumValue, isEnumValueGenerator } from '@/typeguards/enum';
 
 enum TestEnum {
   Value1,

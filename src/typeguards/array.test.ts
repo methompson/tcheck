@@ -1,5 +1,5 @@
-import { isArrayOf, isArray } from './array';
-import { isNumber, isString } from './primitives';
+import { isArrayOf, isArray } from '@/typeguards/array';
+import { isNumber, isString } from '@/typeguards/primitives';
 
 describe('arrays', () => {
   describe('isArray', () => {

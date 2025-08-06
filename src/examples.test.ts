@@ -1,5 +1,5 @@
-import { not } from './utils/not';
-import { isString } from './typeguards/primitives';
+import { not } from '@/utils/not';
+import { isString } from '@/typeguards/primitives';
 
 describe('Array Filtering', () => {
   test('can filter out non-string values from an array', () => {

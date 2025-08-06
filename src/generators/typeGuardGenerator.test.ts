@@ -3,16 +3,16 @@ import {
   isNumber,
   isString,
   isUndefined,
-} from '../typeguards/primitives';
-import { unionGuard } from './union';
-import { isArrayOfGenerator } from './instanceOfGenerator';
+} from '@/typeguards/primitives';
+import { unionGuard } from '@/generators/union';
+import { isArrayOfGenerator } from '@/generators/instanceOfGenerator';
 
 import {
   indexedObjectTypeGuardGenerator,
   strictTypeGuardGenerator,
   typeGuardGenerator,
   typeGuardTestGenerator,
-} from './typeGuardGenerator';
+} from '@/generators/typeGuardGenerator';
 
 describe('generators', () => {
   describe('typeGuardGenerator', () => {

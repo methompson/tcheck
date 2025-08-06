@@ -1,4 +1,4 @@
-export { isArray, isArrayOf } from './typeguards/array';
+export { isArray, isArrayOf } from '@/typeguards/array';
 
 export {
   isRecord,
@@ -8,7 +8,7 @@ export {
   isInterfaceOf,
   isInterfaceOfStrict,
   isObjectOf,
-} from './typeguards/object';
+} from '@/typeguards/object';
 
 export {
   isString,
@@ -20,21 +20,21 @@ export {
   isUndefinedOrNull,
   isBigInt,
   isSymbol,
-} from './typeguards/primitives';
+} from '@/typeguards/primitives';
 
-export { not } from './utils/not';
-export { separate } from './utils/separate';
+export { not } from '@/utils/not';
+export { separate } from '@/utils/separate';
 
 export {
   isPromise,
   isPromiseRejected,
   isPromiseFulfilled,
-} from './typeguards/promises';
+} from '@/typeguards/promises';
 
 export {
   isInstanceOfGenerator,
   isArrayOfGenerator,
-} from './generators/instanceOfGenerator';
+} from '@/generators/instanceOfGenerator';
 
 export {
   typeGuardTestGenerator,
@@ -42,10 +42,10 @@ export {
   strictTypeGuardGenerator,
   indexedObjectTypeGuardGenerator,
   isObjectOfGenerator,
-} from './generators/typeGuardGenerator';
+} from '@/generators/typeGuardGenerator';
 
-export { isEnumValue, isEnumValueGenerator } from './typeguards/enum';
+export { isEnumValue, isEnumValueGenerator } from '@/typeguards/enum';
 
-export { unionGuard } from './generators/union';
+export { unionGuard } from '@/generators/union';
 
-export { type TypeGuard, type TypeGuardGeneratorInput } from './utils/type';
+export { type TypeGuard, type TypeGuardGeneratorInput } from '@/utils/type';

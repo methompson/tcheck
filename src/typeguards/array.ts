@@ -1,4 +1,4 @@
-import { TypeGuard } from '../utils/type';
+import { TypeGuardInput } from '@/utils/type';
 
 /**
  * Checks that the value is an array. The contents do not matter
@@ -17,7 +17,7 @@ export function isArray(input: unknown): input is unknown[] {
  */
 export function isArrayOf<T>(
   input: unknown,
-  guard: TypeGuard<T> | ((input: unknown) => boolean),
+  guard: TypeGuardInput<T>,
 ): input is T[] {
   if (!isArray(input)) {
     return false;

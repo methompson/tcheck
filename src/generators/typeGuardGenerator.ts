@@ -1,11 +1,15 @@
-import { isArray } from '../typeguards/array';
+import { isArray } from '@/typeguards/array';
 import {
   isInterfaceOf,
   isInterfaceOfStrict,
   isObjectOf,
   isRecord,
-} from '../typeguards/object';
-import { TypeGuard, TypeGuardGeneratorInput } from '../utils/type';
+} from '@/typeguards/object';
+import {
+  TypeGuard,
+  TypeGuardGeneratorInput,
+  TypeGuardInput,
+} from '@/utils/type';
 
 // The TypeGuardTestInput is a union of two different function types.
 // The first is similar to the typical TypeGuard function where you get
@@ -72,7 +76,7 @@ export function typeGuardTestGenerator(
  */
 export function typeGuardGenerator<T>(
   tgInput: TypeGuardGeneratorInput,
-): (input: unknown) => input is T {
+): TypeGuard<T> {
   return (valueInput: unknown): valueInput is T =>
     isInterfaceOf<T>(valueInput, tgInput);
 }
@@ -86,7 +90,7 @@ export function typeGuardGenerator<T>(
  */
 export function strictTypeGuardGenerator<T>(
   tgInput: TypeGuardGeneratorInput,
-): (input: unknown) => input is T {
+): TypeGuard<T> {
   return (valueInput: unknown): valueInput is T =>
     isInterfaceOfStrict<T>(valueInput, tgInput);
 }
@@ -103,7 +107,7 @@ export function strictTypeGuardGenerator<T>(
  * the correct type.
  */
 export function indexedObjectTypeGuardGenerator<T>(
-  tg: TypeGuard<T>,
+  tg: TypeGuardInput<T>,
 ): (input: unknown) => input is Record<string | number, T> {
   return (valueInput: unknown): valueInput is Record<string | number, T> =>
     isObjectOf(valueInput, tg);

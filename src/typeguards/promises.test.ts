@@ -1,4 +1,8 @@
-import { isPromiseFulfilled, isPromiseRejected, isPromise } from './promises';
+import {
+  isPromiseFulfilled,
+  isPromiseRejected,
+  isPromise,
+} from '@/typeguards/promises';
 
 const promiseResolved = async () => {};
 const promiseRejected = async () => {

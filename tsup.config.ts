@@ -12,4 +12,5 @@ export default defineConfig({
   treeshake: false,
   format: ['cjs', 'esm'],
   dts: true,
+  tsconfig: 'tsconfig.build.json',
 });
