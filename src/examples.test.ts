@@ -1,4 +1,4 @@
-import { not } from './typeguards/not';
+import { not } from './utils/not';
 import { isString } from './typeguards/primitives';
 
 describe('Array Filtering', () => {

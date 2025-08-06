@@ -2,7 +2,7 @@ import { typeGuardGenerator } from '../generators/typeGuardGenerator';
 import { isNumber, isString } from './primitives';
 
 /**
- * @typedef {import('./type').TypeGuard<T>} TypeGuard
+ * @typedef {import('../utils/type').TypeGuard<T>} TypeGuard
  * @template T
  */
 
@@ -29,7 +29,7 @@ describe('types', () => {
   });
 
   test('Checking more linting', () => {
-    /** @type {import('./type').TypeGuard<TestType>} */
+    /** @type {import('../utils/type').TypeGuard<TestType>} */
     const tg = typeGuardGenerator({
       key: isString,
       value: isNumber,

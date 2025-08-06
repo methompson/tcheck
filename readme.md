@@ -84,6 +84,12 @@ const nonStrArray = mixedArray.filter(not(isString));
 
 In the above example, `strArray` becomes an array of strings and properly typed in TypeScript.
 
+The `separate` function was also developed specifically for an all-in-one example above:
+
+```ts
+const [strArray, nonStrArray] = separate(isString)(mixedArray);
+```
+
 The purpose of the project was to make it easier to avoid dreaded type-related errors like `undefined is not an object` and other problems that arise when you think you have one data type, but you, in fact, have another.
 
 The package does two separate things that eventually accomplish the same goal, depending on whether you're using TypeScript or JavaScript. For TypeScript, the type guards will let the engine know that a variable is of a specific type. For JavaScript, the functions just return booleans, so you can use if statements to check what you have. Ultimately, the functions will let you know what kinds of data you have (or don't have).
@@ -101,17 +107,33 @@ The package includes the following functions:
 - Type guard test generators that allow you to test objects to determine what values are incorrect
 - Union type type guard generators that allow you to generate type guards for any combination of types.
 
+## Basic Types
+
+```ts
+type TypeGuard<T> = (value: unknown) => value is T;
+type TypeGuardGeneratorInput = {
+  [key: string]: TypeGuard<unknown>;
+};
+```
+
+There are two exported types that are used in the project to denote types. The `TypeGuard` type is an alias for any function that returns a TypeScript type predicate, i.e. using the `is` keyword to denote that an argument is a specific type.
+
 ## Primitives
 
 The primitive type guards test for all of JavaScript's basic primitive types:
 
-- `isString` - string
-- `isNumber` - number
-- `isBoolean` - boolean
-- `isUndefined` - undefined
-- `isNull` - null
-- `isBigInt` - bigint
-- `isSymbol` - symbol
+```ts
+isString: (input: unknown) => input is string
+isNumber: (input: unknown) => input is number
+isBoolean: (input: unknown) => input is boolean
+isUndefined: (input: unknown) => input is undefined
+isNull: (input: unknown) => input is null
+isBigInt: (input: unknown) => input is BigInt
+isSymbol: (input: unknown) => input is Symbol
+
+isNullOrUndefined: (input: unknown) => input is undefined | null
+isUndefinedOrNull: (input: unknown) => input is undefined | null
+```
 
 Plus `isNullOrUndefined` and its alias `isUndefinedOrNull` to test for either null or undefined.
 
@@ -128,6 +150,11 @@ isSymbol(Symbol()); // Resolves to true
 ```
 
 ## Objects
+
+```ts
+isObject: (input: unknown) => input is Record<string | number, unknown>
+isRecord: (input: unknown) => input is Record<string | number, unknown>
+```
 
 The object type guards test for regular objects, functions and instances from classes. In the TypeScript ecosystem a regular object is actually called a "Record", which is where the `isRecord` function comes from, but an alias for `isObject` is also available for those that find it easier to remember.
 
@@ -161,6 +188,12 @@ isRecord([]); // resolves to false
 isRecord(null); // resolves to false
 ```
 
+## Functions
+
+```ts
+isFunction: (input: unknown) => input is Function
+```
+
 `isFunction` will test that values are functions. This isn't terribly strict, so some values will also return true, even though we don't consider them practically a function, like classes. As such, `isStrictFunction` will test that basic, callable functions return true. The purpose of `isStrictFunction` is to attempt to discern the spirit of type checking and only provide functions that are callable. ES5 classes tend to be callable, whereas ES6 classes (using the class keyword) cannot.
 
 ### Examples
@@ -180,6 +213,19 @@ isFunction(testB); // resolves to true
 isFunction(Es5Class); // resolves to true
 isFunction(Es6Class); // resolves to false
 isFunction(Date); // resolves to true
+```
+
+## isInstanceOf
+
+```ts
+isInstanceOf: <T>(
+  input: unknown,
+  constructor: new (...args: never[]) => T,
+) => input is T
+
+isInstanceOfGenerator: <T>(
+  constructor: new (...args: never[]) => T,
+) => (input: unknown) => input is T = isInstanceOfGenerator;
 ```
 
 `isInstanceOf` is meant to allow you to determine that a value is an instance of a class. This function works for both ES5 & ES6 style classes. This function is a bit cumbersome to use, which is why the `isInstanceOfGenerator` is preferred over using this.
@@ -219,6 +265,20 @@ AClass.prototype.a = function a() {};
 const a = new AClass();
 
 expect(isInstanceOf(a, AClass)).toBe(true);
+```
+
+## isInterfaceOf
+
+```ts
+isInterfaceOf: <T>(
+  valueInput: unknown,
+  tgInput: Record<string, (input: unknown) => boolean>,
+) => valueInput is T
+
+isInterfaceOfStrict: <T>(
+  valueInput: unknown,
+  tgInput: Record<string, (input: unknown) => boolean>,
+) => valueInput is T
 ```
 
 `isInterfaceOf` allows you to check objects in an ad-hoc fashion. You can check that an object conforms to a specific interface.
@@ -276,6 +336,15 @@ isInterfaceOfStrict<Fun>(goodInput, { a: isString, b: isNumber, c: isBoolean });
 isInterfaceOfStrict<Fun>(badInput, { a: isString, b: isNumber, c: isBoolean }); // resolves to false
 ```
 
+## isObjectOf
+
+```ts
+isObjectOf: <T>(
+  input: unknown,
+  typeGuard: (input: unknown) => input is T
+): input is Record<string | number, T>
+```
+
 `isObjectOf` allows you to check that all values of an object conform to a specific type.
 
 ### Examples
@@ -316,6 +385,16 @@ isObjectOf<Fun>(obj, isFun); // resolves to true
 
 ## Promises
 
+```ts
+isPromise: (input: unknown) => input is Promise<unknown>
+isPromiseFulfilled: (
+  input: PromiseSettledResult<unknown>,
+) => input is PromiseRejectedResult<unknown>
+isPromiseRejected: (
+  input: PromiseSettledResult<unknown>,
+) => input is PromiseFulfilledResult<unknown>
+```
+
 The promise type guards test for types associated with promises.
 
 - `isPromise` Checks whether the value is a `Promise` type
@@ -335,6 +414,14 @@ const rejectedPromises = results.filter(isPromiseRejected);
 ```
 
 ## Arrays
+
+```ts
+isArray: (input: unknown) => input is unknown[]
+isArrayOf: <T>(
+  input: unknown,
+  guard: (<T>(input: unknown) => input is T) | ((input: unknown) => boolean),
+) => input is T[];
+```
 
 tcheck provides two functions for checking Arrays, `isArray` and `isArrayOf`. `isArray` allows you to check if a value is actually an array. This is useful over `Array.isArray`, because by default it sets the value's type to `any[]`, whereas `isArray` will set the value's type to `unknown[]`. This allows slightly more permissive configurations to lint your code and force you to check the contents of your array.
 
@@ -358,6 +445,17 @@ isArrayOf<number>(var3, isNumber); // Resolves to false
 ```
 
 ## Enums
+
+```ts
+interface PotentialEnum {
+  [key: string]: number | string;
+}
+
+isEnumValue: <T extends PotentialEnum>(
+  input: unknown,
+  enumValue: T
+) => input is T[keyof T]
+```
 
 Enums are a great way to constrain a value to a subset of strings or numbers. However, at the end of the day, TS enums are just objects of strings and numbers. One common action that is frequently taken is to receive a string value that should be part of an enum. `isEnumValue` is introduced to make it easy to confirm that a value is, in fact, a part of the enum.
 
@@ -386,6 +484,34 @@ if (isEnumValue(input, Direction)) {
 ```
 
 ## Generators
+
+```ts
+typeGuardTestGenerator: (
+  input: {
+    [key: string]: ((input: unknown) => boolean) | ((input: unknown) => string[])
+  }
+) => (input: unknown) => string[]
+
+typeGuardGenerator: <T>(
+  tgInput: { [key: string]: TypeGuard<unknown> }
+) => TypeGuard<T>
+
+strictTypeGuardGenerator: <T>(
+  typeGuard: TypeGuard<T>,
+) => TypeGuard<Record<string | number, T>>
+
+isObjectOfGenerator: <T>(
+  typeGuard: TypeGuard<T>,
+) => TypeGuard<Record<string | number, T>>
+
+isInstanceOfGenerator: <T>(constructor: new (...args: never[]) => T) => TypeGuard<T>
+
+isArrayOfGenerator: <T>(guard: (input: unknown) => input is T) => TypeGuard<T>
+
+unionGuard: <T>(...guards: ((input: unknown) => boolean)[]) => TypeGuard<T>
+
+isEnumValueGenerator: <T extends PotentialEnum>(enumValues: T) => (input: unknown) => input is T[keyof T]
+```
 
 The generators are where we get to the real power of this library. The generators allow us to create our own type guards for more complex data structures. Checking that a string is a string is trivial in the grand scheme of things, but checking that an object conforms to an interface can be a bit tedious. It gets more difficult the more we nest the data. We can offload this type checking to a generator to provide a simpler means to type guard with complex types.
 
@@ -651,7 +777,13 @@ if (isDirection(value)) {
 
 ## not
 
+```ts
+not: <T>(input: TypeGuard<T>) => (input: unknown) => input is Exclude<unknown, T>
+```
+
 Sometimes you want an opposite type guard. I.e. you may want to retrieve all values that DON'T conform to a specific type. The `not` function accepts a typeguard as an input and returns a new typeguard-like function that returns true if the input value is NOT the type in question.
+
+### Examples
 
 ```ts
 const myStr = 'hello, world';
@@ -731,6 +863,8 @@ function separate<T>(
 separate accepts a typeguard and returns a function that separates values based upon the typeguard. I.e. it filters out all values that pass the typeguard into one array and everything else in another. It returns an array with the first value being all values of type `T` and the second value being all values that are NOT `T`.
 
 Sometimes the show must go on and you'd like return values even if there's bad data. You can separate out values that actually conform and everything else gets sorted into a second array. If anything is in the second array, you have some bad data.
+
+### Examples
 
 ```ts
 import { isArray, separate } from '@metools/tcheck';

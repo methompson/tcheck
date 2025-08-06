@@ -5,13 +5,7 @@ import {
   isObjectOf,
   isRecord,
 } from '../typeguards/object';
-
-// The typeGuardGeneratorInterface is an object where the keys are the keys of an
-// interface/object that you are type checking and the values are the type
-// guard functions that you want to use to check the values of the keys.
-interface TypeGuardGeneratorInput {
-  [key: string]: (input: unknown) => boolean;
-}
+import { TypeGuard, TypeGuardGeneratorInput } from '../utils/type';
 
 // The TypeGuardTestInput is a union of two different function types.
 // The first is similar to the typical TypeGuard function where you get
@@ -109,10 +103,18 @@ export function strictTypeGuardGenerator<T>(
  * the correct type.
  */
 export function indexedObjectTypeGuardGenerator<T>(
-  tg: (input: unknown) => boolean,
+  tg: TypeGuard<T>,
 ): (input: unknown) => input is Record<string | number, T> {
   return (valueInput: unknown): valueInput is Record<string | number, T> =>
     isObjectOf(valueInput, tg);
 }
+
+const iotgg: <T>(
+  typeGuard: TypeGuard<T>,
+) => (input: unknown) => input is Record<string | number, T> =
+  indexedObjectTypeGuardGenerator;
+const iotgg_2: <T>(
+  typeGuard: TypeGuard<T>,
+) => TypeGuard<Record<string | number, T>> = indexedObjectTypeGuardGenerator;
 
 export const isObjectOfGenerator = indexedObjectTypeGuardGenerator;

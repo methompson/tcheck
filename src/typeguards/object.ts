@@ -1,3 +1,5 @@
+import { TypeGuard, TypeGuardGeneratorInput } from '../utils/type';
+
 /**
  * Checks if the value is an object. This function is very permissive,
  * so it will return true for plain object, instances from classes, etc.
@@ -42,7 +44,7 @@ export function isInstanceOf<T>(
  */
 export function isInterfaceOf<T>(
   valueInput: unknown,
-  tgInput: Record<string, (input: unknown) => boolean>,
+  tgInput: TypeGuardGeneratorInput,
 ): valueInput is T {
   if (!isRecord(valueInput)) {
     return false;
@@ -61,7 +63,7 @@ export function isInterfaceOf<T>(
  */
 export function isInterfaceOfStrict<T>(
   valueInput: unknown,
-  tgInput: Record<string, (input: unknown) => boolean>,
+  tgInput: TypeGuardGeneratorInput,
 ): valueInput is T {
   if (!isRecord(valueInput)) {
     return false;
@@ -89,7 +91,7 @@ export function isInterfaceOfStrict<T>(
  */
 export function isObjectOf<T>(
   input: unknown,
-  tg: (input: unknown) => boolean,
+  tg: TypeGuard<T>,
 ): input is Record<string | number, T> {
   if (!isRecord(input)) {
     return false;

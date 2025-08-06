@@ -1,3 +1,5 @@
+import { TypeGuard } from '../utils/type';
+
 /**
  * Checks that the value is an array. The contents do not matter
  * to this function. Use this instead of just `Array.isArray` to
@@ -15,7 +17,7 @@ export function isArray(input: unknown): input is unknown[] {
  */
 export function isArrayOf<T>(
   input: unknown,
-  guard: (_input: unknown) => boolean,
+  guard: TypeGuard<T> | ((input: unknown) => boolean),
 ): input is T[] {
   if (!isArray(input)) {
     return false;

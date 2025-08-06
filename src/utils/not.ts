@@ -1,4 +1,4 @@
-import { TypeGuard } from '../typeguards/type';
+import { TypeGuard } from './type';
 
 export function not<T>(
   baseInput: TypeGuard<T>,

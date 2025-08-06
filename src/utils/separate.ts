@@ -1,4 +1,4 @@
-import { TypeGuard } from '../typeguards/type';
+import { TypeGuard } from './type';
 
 /**
  * Returns a function that takes an array of unknown values

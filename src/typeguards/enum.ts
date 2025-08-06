@@ -7,11 +7,10 @@ interface PotentialEnum {
 }
 const isStringOrNumber = unionGuard<string | number>(isString, isNumber);
 
-export function isEnumValue<Type extends PotentialEnum>(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  input: any,
-  enumValue: Type,
-): input is Type[keyof Type] {
+export function isEnumValue<T extends PotentialEnum>(
+  input: unknown,
+  enumValue: T,
+): input is T[keyof T] {
   return (
     isStringOrNumber(input) &&
     isRecord(enumValue) &&
@@ -19,11 +18,8 @@ export function isEnumValue<Type extends PotentialEnum>(
   );
 }
 
-export function isEnumValueGenerator<Type extends PotentialEnum>(
-  enumValue: Type,
-) {
+export function isEnumValueGenerator<T extends PotentialEnum>(enumValue: T) {
   // TODO may be able to make this more efficient with
   // a map of values to keys
-  return (input: unknown): input is Type[keyof Type] =>
-    isEnumValue(input, enumValue);
+  return (input: unknown): input is T[keyof T] => isEnumValue(input, enumValue);
 }

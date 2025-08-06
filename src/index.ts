@@ -48,4 +48,4 @@ export { isEnumValue, isEnumValueGenerator } from './typeguards/enum';
 
 export { unionGuard } from './generators/union';
 
-export { TypeGuard } from './typeguards/type';
+export { type TypeGuard, type TypeGuardGeneratorInput } from './utils/type';
