@@ -109,12 +109,4 @@ export function indexedObjectTypeGuardGenerator<T>(
     isObjectOf(valueInput, tg);
 }
 
-const iotgg: <T>(
-  typeGuard: TypeGuard<T>,
-) => (input: unknown) => input is Record<string | number, T> =
-  indexedObjectTypeGuardGenerator;
-const iotgg_2: <T>(
-  typeGuard: TypeGuard<T>,
-) => TypeGuard<Record<string | number, T>> = indexedObjectTypeGuardGenerator;
-
 export const isObjectOfGenerator = indexedObjectTypeGuardGenerator;
