@@ -23,3 +23,11 @@ export function separate<T>(
     return [is, isNot];
   };
 }
+
+const separateFunc: <T>(
+  typeguard: TypeGuard<T>,
+) => (val: unknown[]) => [T[], Exclude<unknown, T>[]] = separate;
+
+export function test() {
+  return separateFunc;
+}

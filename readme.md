@@ -649,7 +649,7 @@ if (isDirection(value)) {
 }
 ```
 
-## Not
+## not
 
 Sometimes you want an opposite type guard. I.e. you may want to retrieve all values that DON'T conform to a specific type. The `not` function accepts a typeguard as an input and returns a new typeguard-like function that returns true if the input value is NOT the type in question.
 
@@ -670,7 +670,7 @@ const mixedArray = [1, 'hello', true, null, 'world', undefined];
 const notStrings = mixedArray.filter(not(isString));
 ```
 
-You don't have to save the function is you're using it in a one-off situation:
+You don't have to save the function if you're using it in a one-off situation:
 
 ```ts
 const myNum = 12345;
@@ -718,6 +718,39 @@ const notUserStringBool = not(isUserOrStringOrBoolean);
 
 // Should include 5 elements, 2 objects, 1 number, null and undefined
 const values = mixedArray.filter(notUserStringBool);
+```
+
+## separate
+
+```ts
+function separate<T>(
+  typeguard: TypeGuard<T>,
+): (val: unknown[]) => [T[], Exclude<unknown, T>[]];
+```
+
+separate accepts a typeguard and returns a function that separates values based upon the typeguard. I.e. it filters out all values that pass the typeguard into one array and everything else in another. It returns an array with the first value being all values of type `T` and the second value being all values that are NOT `T`.
+
+Sometimes the show must go on and you'd like return values even if there's bad data. You can separate out values that actually conform and everything else gets sorted into a second array. If anything is in the second array, you have some bad data.
+
+```ts
+import { isArray, separate } from '@metools/tcheck';
+import { myCustomTypeguard } from './some/path';
+
+const data = await fetch(url);
+const rawJson = await data.json();
+
+if (!isArray(rawJson)) {
+  throw new Error('Invalid Response');
+}
+
+const customTGSeparator = separate(myCustomTypeGuard);
+
+// Now we have an array
+const [is, isNot] = customTGSeparator(rawJson);
+
+if (isNot.length !== 0) {
+  console.warn('Invalid data received from server');
+}
 ```
 
 ## Use with JavaScript & JSDoc
