@@ -22,7 +22,8 @@ export {
   isSymbol,
 } from './typeguards/primitives';
 
-export { not } from './typeguards/not';
+export { not } from './utils/not';
+export { separate } from './utils/separate';
 
 export {
   isPromise,

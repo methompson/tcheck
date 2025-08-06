@@ -1,5 +1,5 @@
 import { not } from './not';
-import { isString, isNumber, isBoolean } from './primitives';
+import { isString, isNumber, isBoolean } from '../typeguards/primitives';
 import { typeGuardGenerator } from '../generators/typeGuardGenerator';
 
 import { unionGuard } from '../generators/union';
