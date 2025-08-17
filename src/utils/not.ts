@@ -1,7 +1,7 @@
 import { TypeGuard } from '@/utils/type';
 
-export function not<T>(
+export function not<U, T>(
   baseInput: TypeGuard<T>,
-): (input: unknown) => input is Exclude<unknown, T> {
-  return (input: unknown): input is Exclude<unknown, T> => !baseInput(input);
+): (input: U) => input is Exclude<U, T> {
+  return (input: U): input is Exclude<U, T> => !baseInput(input);
 }

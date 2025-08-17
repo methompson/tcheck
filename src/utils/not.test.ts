@@ -60,4 +60,12 @@ describe('not', () => {
     expect(values).toHaveLength(5);
     expect(values).toEqual([{}, { id: '1' }, 1, null, undefined]);
   });
+
+  test('filters out a specific type', () => {
+    const func = (_input: string) => {};
+    const values = ['a', 1, 'b', 2, '3'];
+
+    const notNum = values.filter(not(isNumber));
+    notNum.map(func);
+  });
 });
