@@ -778,8 +778,10 @@ if (isDirection(value)) {
 ## not
 
 ```ts
-not: <T>(input: TypeGuard<T>) => (input: unknown) => input is Exclude<unknown, T>
+not: <T>(input: TypeGuard<T>) => (input: U) => input is Exclude<U, T>
 ```
+
+This function accepts an input of generic type `U` and an input of `TypeGuard<T>` and returns a boolean that resolves to an `Exclude<U,T` type. This means that it excludes the type `T` in the TypeGuard from the Union guard `U` type.
 
 Sometimes you want an opposite type guard. I.e. you may want to retrieve all values that DON'T conform to a specific type. The `not` function accepts a typeguard as an input and returns a new typeguard-like function that returns true if the input value is NOT the type in question.
 
@@ -799,6 +801,7 @@ This can be used for filtering. Maybe you want to find all values that don't con
 
 ```ts
 const mixedArray = [1, 'hello', true, null, 'world', undefined];
+// Filters out strings
 const notStrings = mixedArray.filter(not(isString));
 ```
 
@@ -850,6 +853,26 @@ const notUserStringBool = not(isUserOrStringOrBoolean);
 
 // Should include 5 elements, 2 objects, 1 number, null and undefined
 const values = mixedArray.filter(notUserStringBool);
+```
+
+When used with a value that has union type, it will filter the type out.
+
+```ts
+// typed as (string | number)[]
+const myArray = [1, 2, 3, '4', '5', '6'];
+
+// Filtering out numbers. Now typed as string[]
+const filteredArray = myArray.filter(not(isNumber));
+```
+
+However, if a value is typed as `unknown` or `any`, `not` will still work as a filter, but will not change the types:
+
+```ts
+// Typed as unknown[]
+const result = await getSomeData();
+
+// Filtering out numbers. still typed as unknown[]
+const filteredArray = result.filter(not(isNumber));
 ```
 
 ## separate

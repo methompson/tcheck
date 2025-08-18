@@ -66,6 +66,14 @@ describe('not', () => {
     const values = ['a', 1, 'b', 2, '3'];
 
     const notNum = values.filter(not(isNumber));
+    // Can pass in the string array
     notNum.map(func);
+  });
+
+  test('filters out types from an unknown array, but type remains as unknown[]', () => {
+    const values: unknown[] = ['a', 1, 'b', 2, '3'];
+    const notNum = values.filter(not(isNumber));
+
+    expect(notNum).toEqual(['a', 'b', '3']);
   });
 });
