@@ -53,18 +53,8 @@ export default [
         },
       ],
       'no-trailing-spaces': 'error',
-
       'arrow-body-style': ['error', 'as-needed'],
       'arrow-parens': ['error', 'always'],
-      'max-len': [
-        'warn',
-        {
-          ignoreStrings: true,
-          ignoreTemplateLiterals: true,
-          code: 100,
-          comments: 100,
-        },
-      ],
       'no-restricted-syntax': 'off',
     },
   },
