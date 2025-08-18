@@ -225,7 +225,7 @@ isInstanceOf: <T>(
 
 isInstanceOfGenerator: <T>(
   constructor: new (...args: never[]) => T,
-) => (input: unknown) => input is T = isInstanceOfGenerator;
+) => TypeGuard<T>;
 ```
 
 `isInstanceOf` is meant to allow you to determine that a value is an instance of a class. This function works for both ES5 & ES6 style classes. This function is a bit cumbersome to use, which is why the `isInstanceOfGenerator` is preferred over using this.
@@ -506,7 +506,7 @@ isObjectOfGenerator: <T>(
 
 isInstanceOfGenerator: <T>(constructor: new (...args: never[]) => T) => TypeGuard<T>
 
-isArrayOfGenerator: <T>(guard: (input: unknown) => input is T) => TypeGuard<T>
+isArrayOfGenerator: <T>(guard: (input: unknown) => input is T) => TypeGuard<T[]>
 
 unionGuard: <T>(...guards: ((input: unknown) => boolean)[]) => TypeGuard<T>
 
