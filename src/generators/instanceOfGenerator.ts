@@ -20,8 +20,6 @@ export function isInstanceOfGenerator<T>(
  * that you can pass around as a function without having to use the boilerplate
  * of `isArrayOf`.
  */
-export function isArrayOfGenerator<T>(
-  guard: TypeGuard<T>,
-): (input: unknown) => input is T[] {
+export function isArrayOfGenerator<T>(guard: TypeGuard<T>): TypeGuard<T[]> {
   return (input) => isArrayOf<T>(input, guard);
 }

@@ -99,12 +99,12 @@ export function strictTypeGuardGenerator<T>(
  * Exports a function that can test if an object has non-specific
  * keys with values that conform to a specific interface or
  * type.
+ * For instance, we may want to test that the values of an object are all boolean:
  * e.g. { [key: string]: boolean }
- * e.g. { [key: string]: { [key: string]: boolean } }
  * e.g. Record<string, boolean>
  *
- * This test will confirm that the object's values are of
- * the correct type.
+ * indexedObjectTypeGuardGenerator will test that all values in the object
+ * conform to the specified type guard.
  */
 export function indexedObjectTypeGuardGenerator<T>(
   tg: TypeGuardInput<T>,

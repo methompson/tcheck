@@ -1,4 +1,4 @@
-import { TypeGuardInput } from '@/utils/type';
+import { TypeGuard, TypeGuardInput } from '@/utils/type';
 
 /**
  * Generates a type guard for union types, i.e. types that have the
@@ -14,6 +14,6 @@ import { TypeGuardInput } from '@/utils/type';
  */
 export function unionGuard<T>(
   ...guards: TypeGuardInput<unknown>[]
-): (input: unknown) => input is T {
+): TypeGuard<T> {
   return (input: unknown): input is T => guards.some((guard) => guard(input));
 }

@@ -51,4 +51,15 @@ describe('Union type', () => {
     expect(isStringOrNullOrUndefined(undefined)).toBe(true);
     expect(isStringOrNullOrUndefined('')).toBe(true);
   });
+
+  test('returns false for values not in the union', () => {
+    const guard = unionGuard<string | number>(isString, isNumber);
+
+    expect(guard(true)).toBe(false);
+    expect(guard(null)).toBe(false);
+    expect(guard({})).toBe(false);
+    expect(guard([])).toBe(false);
+    expect(guard(BigInt(1))).toBe(false);
+    expect(guard(Symbol())).toBe(false);
+  });
 });
