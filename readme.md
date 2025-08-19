@@ -264,7 +264,7 @@ AClass.prototype.a = function a() {};
 
 const a = new AClass();
 
-expect(isInstanceOf(a, AClass)).toBe(true);
+isInstanceOf(a, AClass); // resolves to true
 ```
 
 ## isInterfaceOf
