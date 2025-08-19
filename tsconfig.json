@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "types": [
+      "node",
+      "vitest/globals",
+    ],
     "paths": {
       "@/*": [
         "./src/*"

@@ -5,7 +5,7 @@ export default [
   ...tseslint.config(tseslint.configs.recommended),
   eslintPluginPrettierRecommended,
   {
-    ignores: ['dist/*', 'jest.config.*', 'tsconfig.json'],
+    ignores: ['dist/*', 'vitest.config.*', 'tsconfig.json'],
   },
   {
     languageOptions: {
