@@ -11,19 +11,23 @@ import {
   TypeGuardInput,
 } from '@/utils/type';
 
-// The TypeGuardTestInput is a union of two different function types.
-// The first is similar to the typical TypeGuard function where you get
-// a boolean output. The second is a type guard test that returns an array
-// of strings. This allows us to use both a type guard and type guard test
-// in the same generator.
+/**
+ * The TypeGuardTestInput is a union of two different function types.
+ * The first is similar to the typical TypeGuard function where you get
+ * a boolean output. The second is a type guard test that returns an array
+ * of strings. This allows us to use both a type guard and type guard test
+ * in the same generator.
+ */
 type TypeGuardTestInput =
   | ((input: unknown) => boolean)
   | ((input: unknown) => string[]);
 
-// The TypeGuardTestGeneratorInput is an object where the keys are the keys of an
-// interface/object that you are type checking and the values are the type
-// guard functions or type guard test functions that you want to use to check
-// the values of the keys.
+/**
+ * The TypeGuardTestGeneratorInput is an object where the keys are the keys of an
+ * interface/object that you are type checking and the values are the type
+ * guard functions or type guard test functions that you want to use to check
+ * the values of the keys.
+ */
 interface TypeGuardTestGeneratorInput {
   [key: string]: TypeGuardTestInput;
 }
