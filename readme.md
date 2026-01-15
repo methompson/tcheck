@@ -124,6 +124,8 @@ The primitive type guards test for all of JavaScript's basic primitive types:
 
 ```ts
 isString: (input: unknown) => input is string
+isNonEmptyString: (input: unknown) => input is string
+isStringWithLength: (input: unknown) => input is string
 isNumber: (input: unknown) => input is number
 isBoolean: (input: unknown) => input is boolean
 isUndefined: (input: unknown) => input is undefined
@@ -137,10 +139,14 @@ isUndefinedOrNull: (input: unknown) => input is undefined | null
 
 Plus `isNullOrUndefined` and its alias `isUndefinedOrNull` to test for either null or undefined.
 
+`isNonEmptyString` and its alias `isStringWithLength` check to see if the value is a string that has length.
+
 ### Examples
 
 ```ts
 isString('string'); // Resolves to true
+isNonEmptyString('string') // Resolves to true
+isNonEmptyString('') // Resolves to false. It's a string, but zero length
 isNumber(0); // Resolves to true
 isBoolean(true); // Resolves to true
 isUndefined(undefined); // Resolves to true
@@ -421,11 +427,27 @@ isArrayOf: <T>(
   input: unknown,
   guard: (<T>(input: unknown) => input is T) | ((input: unknown) => boolean),
 ) => input is T[];
+
+isNonEmptyArray: (input: unknown) => input is unknown[]
+isArrayWithLength: (input: unknown) => input is unknown[]
+
+isNonEmptyArrayOf: <T>(
+  input: unknown,
+  guard: (<T>(input: unknown) => input is T) | ((input: unknown) => boolean),
+) => input is T[];
+isArrayWithLengthOf: <T>(
+  input: unknown,
+  guard: (<T>(input: unknown) => input is T) | ((input: unknown) => boolean),
+) => input is T[];
 ```
 
 tcheck provides two functions for checking Arrays, `isArray` and `isArrayOf`. `isArray` allows you to check if a value is actually an array. This is useful over `Array.isArray`, because by default it sets the value's type to `any[]`, whereas `isArray` will set the value's type to `unknown[]`. This allows slightly more permissive configurations to lint your code and force you to check the contents of your array.
 
 `isArrayOf` is a bit more specific. It checks if the contents of any array are of a specific type. This can be used with regular type guards as well as union type guards. This allows you to confirm that the Array is homogenous and of a specific type.
+
+`isNonEmptyArray` and its alias `isArrayWithLength` check if the value is an array and that it has length > 0.
+
+`isNonEmptyArrayOf` and its alias `isArrayWithLengthOf` do the same thing as `isArrayOf`, but also check if it has length > 0.
 
 ### Examples
 
@@ -442,6 +464,13 @@ isArrayOf<number>(var1, isNumber); // Resolves to true
 isArrayOf<number>(var2, isNumber); // Resolves to false
 isArrayOf<string>(var2, isString); // Resolves to true
 isArrayOf<number>(var3, isNumber); // Resolves to false
+
+isNonEmptyArray(var1); // Returns false (no elements)
+isNonEmptyArray(var2); // Returns true (has length)
+
+isNonEmptyArrayOf(var1, isString); // Returns false (no elements)
+isNonEmptyArrayOf(var2, isString); // Returns true (has elements and they're all strings)
+isNonEmptyArrayOf(var3, isString); // Returns false (has elements, but they're not all strings)
 ```
 
 ## Enums

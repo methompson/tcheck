@@ -1,4 +1,4 @@
-export { isArray, isArrayOf } from '@/typeguards/array';
+export { isArray, isNonEmptyArray, isArrayWithLength, isArrayOf } from '@/typeguards/array';
 
 export {
   isRecord,
@@ -12,6 +12,8 @@ export {
 
 export {
   isString,
+  isNonEmptyString,
+  isStringWithLength,
   isNumber,
   isBoolean,
   isUndefined,

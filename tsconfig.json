@@ -110,7 +110,8 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "bump_versions.ts"
   ],
   "exclude": [
     "node_modules",

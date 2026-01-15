@@ -1,4 +1,9 @@
-import { isArrayOf, isArray } from '@/typeguards/array';
+import {
+  isArrayOf,
+  isArray,
+  isNonEmptyArray,
+  isNonEmptyArrayOf,
+} from '@/typeguards/array';
 import { isNumber, isString } from '@/typeguards/primitives';
 
 describe('arrays', () => {
@@ -24,7 +29,7 @@ describe('arrays', () => {
     });
   });
 
-  describe('arrayOf', () => {
+  describe('isArrayOf', () => {
     test('returns true for arrays with values that pass the guard', () => {
       const numArr: unknown[] = Array.from(
         { length: 100 },
@@ -48,6 +53,61 @@ describe('arrays', () => {
 
       expect(isArrayOf<string>(numArr, isString)).toBe(false);
       expect(isArrayOf<number>(strArr, isNumber)).toBe(false);
+    });
+  });
+
+  describe('isNonEmptyArray / isArrayWithLength', () => {
+    test('returns true for non-empty arrays', () => {
+      expect(isNonEmptyArray([1, 2, 3])).toBe(true);
+      expect(isNonEmptyArray(['a', new Date(), null, {}])).toBe(true);
+    });
+
+    test('returns false for empty arrays', () => {
+      expect(isNonEmptyArray([])).toBe(false);
+      expect(isNonEmptyArray([])).toBe(false);
+    });
+
+    test('returns false for other values', () => {
+      expect(isNonEmptyArray(1)).toBe(false);
+      expect(isNonEmptyArray('a')).toBe(false);
+      expect(isNonEmptyArray({})).toBe(false);
+      expect(isNonEmptyArray(null)).toBe(false);
+      expect(isNonEmptyArray(undefined)).toBe(false);
+      expect(isNonEmptyArray(true)).toBe(false);
+      expect(isNonEmptyArray(() => {})).toBe(false);
+      expect(isNonEmptyArray(function test() {})).toBe(false);
+    });
+  });
+
+  describe('isNonEmptyArrayOf / isArrayWithLengthOf', () => {
+    test('returns true for non-empty arrays with values that pass the guard', () => {
+      const numArr: unknown[] = Array.from(
+        { length: 100 },
+        (_value, index) => index,
+      );
+      const strArr: unknown[] = numArr.map((i) => `${i}`);
+
+      expect(isNonEmptyArrayOf<number>(numArr, isNumber)).toBe(true);
+      expect(isNonEmptyArrayOf<string>(strArr, isString)).toBe(true);
+    });
+
+    test('returns false for empty arrays', () => {
+      expect(isNonEmptyArrayOf<number>([], isNumber)).toBe(false);
+      expect(isNonEmptyArrayOf<string>([], isString)).toBe(false);
+    });
+
+    test('returns false for arrays with values that do not match the guard', () => {
+      const numArr: unknown[] = Array.from(
+        { length: 100 },
+        (_value, index) => index,
+      );
+      const strArr: unknown[] = numArr.map((i) => `${i}`);
+
+      numArr.push('a');
+      strArr.push(1);
+
+      expect(isNonEmptyArrayOf<string>(numArr, isString)).toBe(false);
+      expect(isNonEmptyArrayOf<number>(strArr, isNumber)).toBe(false);
     });
   });
 });

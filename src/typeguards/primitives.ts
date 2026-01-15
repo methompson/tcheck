@@ -6,6 +6,14 @@ export function isString(input: unknown): input is string {
 }
 
 /**
+ * Determines if the input is a non-empty string.
+ */
+export function isNonEmptyString(input: unknown): input is string {
+  return isString(input) && input.length > 0;
+}
+export const isStringWithLength = isNonEmptyString;
+
+/**
  * Determines if the input is a number.
  */
 export function isNumber(input: unknown): input is number {

@@ -25,3 +25,19 @@ export function isArrayOf<T>(
 
   return input.every(guard);
 }
+
+/**
+ * Determines if the input is a non-empty array.
+ */
+export function isNonEmptyArray(input: unknown): input is unknown[] {
+  return isArray(input) && input.length > 0;
+}
+export const isArrayWithLength = isNonEmptyArray;
+
+export function isNonEmptyArrayOf<T>(
+  input: unknown,
+  guard: TypeGuardInput<T>,
+): input is T[] {
+  return isArrayOf<T>(input, guard) && input.length > 0;
+}
+export const isArrayWithLengthOf = isNonEmptyArrayOf;

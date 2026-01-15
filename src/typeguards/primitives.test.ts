@@ -1,6 +1,7 @@
 import {
   isBigInt,
   isBoolean,
+  isNonEmptyString,
   isNull,
   isNullOrUndefined,
   isNumber,
@@ -24,6 +25,26 @@ describe('primitives', () => {
       expect(isString(true)).toBe(false);
       expect(isString(null)).toBe(false);
       expect(isString(undefined)).toBe(false);
+    });
+  });
+
+  describe('isNonEmptyString / isStringWithLength', () => {
+    test('should return true if the input is a non-empty string', () => {
+      expect(isNonEmptyString('a')).toBe(true);
+      expect(isNonEmptyString('abc')).toBe(true);
+    });
+
+    test('should return false for empty strings', () => {
+      expect(isNonEmptyString('')).toBe(false);
+    });
+
+    test('should return false if the input is not a string', () => {
+      expect(isNonEmptyString({})).toBe(false);
+      expect(isNonEmptyString([])).toBe(false);
+      expect(isNonEmptyString(1)).toBe(false);
+      expect(isNonEmptyString(true)).toBe(false);
+      expect(isNonEmptyString(null)).toBe(false);
+      expect(isNonEmptyString(undefined)).toBe(false);
     });
   });
 
