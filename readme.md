@@ -435,7 +435,7 @@ isNonEmptyArrayOf: <T>(
   input: unknown,
   guard: (<T>(input: unknown) => input is T) | ((input: unknown) => boolean),
 ) => input is T[];
-isArrayWithLengthOf: <T>(
+isArrayOfWithLength: <T>(
   input: unknown,
   guard: (<T>(input: unknown) => input is T) | ((input: unknown) => boolean),
 ) => input is T[];
@@ -447,7 +447,7 @@ tcheck provides two functions for checking Arrays, `isArray` and `isArrayOf`. `i
 
 `isNonEmptyArray` and its alias `isArrayWithLength` check if the value is an array and that it has length > 0.
 
-`isNonEmptyArrayOf` and its alias `isArrayWithLengthOf` do the same thing as `isArrayOf`, but also check if it has length > 0.
+`isNonEmptyArrayOf` and its alias `isArrayOfWithLength` do the same thing as `isArrayOf`, but also check if it has length > 0.
 
 ### Examples
 

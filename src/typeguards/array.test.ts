@@ -79,7 +79,7 @@ describe('arrays', () => {
     });
   });
 
-  describe('isNonEmptyArrayOf / isArrayWithLengthOf', () => {
+  describe('isNonEmptyArrayOf / isArrayOfWithLength', () => {
     test('returns true for non-empty arrays with values that pass the guard', () => {
       const numArr: unknown[] = Array.from(
         { length: 100 },

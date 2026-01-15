@@ -40,4 +40,4 @@ export function isNonEmptyArrayOf<T>(
 ): input is T[] {
   return isArrayOf<T>(input, guard) && input.length > 0;
 }
-export const isArrayWithLengthOf = isNonEmptyArrayOf;
+export const isArrayOfWithLength = isNonEmptyArrayOf;
