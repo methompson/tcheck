@@ -15,6 +15,9 @@ src
 .prettierrc
 eslint.config.mjs
 jest.config.js
-tsconfig.json
+tsconfig.*
 publish.sh
 tsup.config.ts
+bump_version.ts
+ready.sh
+vitest.config.ts
