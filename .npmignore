@@ -22,4 +22,4 @@ bump_version.ts
 ready.sh
 vitest.config.ts
 
-# metools-check-*.tgz
+metools-tcheck-*.tgz
